@@ -1,9 +1,18 @@
+require("babel-register")({
+    presets: ["react"]
+});
+
 const express = require("express");
 const app = express();
+const React = require("react");
+const ReactDOMServer = require("react-dom/server");
+const Component = require("./src/components/Component.jsx");
 
+app.use(express.static("public"));
 
 app.get("/", function(req, res) {
-    res.send("<h1>HELLO! :))</h1>");
+    var html = ReactDOMServer.renderToString(React.createElement(Component));
+    res.send(html);
 });
 
 
