@@ -1,25 +1,19 @@
-var React = require("react");
+import React from "react";
 
-module.exports = React.createClass({
-    _handleClick: function(){
+class Component extends React.Component{
+    _handleClick () {
         alert("THANK YOU!");
-    },
-    render: function() {
+    }
+    render () {
         return (
-            <html>
-                <head>
-                    <title>THE MOST AMAZING WEB APP YOU WILL EVER SEE!!!</title>
-                    <link rel="stylesheet" href="/style.css" />
-                </head>
-                <body>
-                    <div>
-                        <h1> HELLO :))) ASD ASD </h1>
-                        <button onClick={this._handleClick}>PUSH ME PLEEEAAASEEE :)</button>
-                    </div>
-                    <script src="/bundle.js" />
-                </body>
-            </html>
-            
+            <div>
+                <h1>
+                    HELLO :))) ASD ASD
+                </h1>
+                <button onClick={this._handleClick}>PUSH ME PLEEEAAASEEE :)</button>
+            </div>
         );
     }
-});
+}
+
+export {Component};

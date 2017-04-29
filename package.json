@@ -1,40 +1,45 @@
 {
-    "name": "nightlifeapp",
-    "version": "1.0.0",
-    "description": "",
-    "main": "server.js",
-    "scripts": {
-        "start": "node server.js",
-        "start_dev": "nodemon server.js",
-        "build": "webpack --watch"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "babel-preset-react": "^6.24.1",
-        "babel-register": "^6.24.1",
-        "express": "^4.15.2",
-        "nodemon": "^1.11.0",
-        "react": "^15.5.4",
-        "react-dom": "^15.5.4"
-    },
-    "devDependencies": {
-        "autoprefixer": "^6.7.7",
-        "babel-core": "^6.24.1",
-        "babel-loader": "^7.0.0",
-        "webpack": "^2.4.1",
-        "babili-webpack-plugin": "0.0.11",
-        "bitbar-webpack-progress-plugin": "^0.1.3",
-        "browserslist": "^1.7.6",
-        "clean-webpack-plugin": "^0.1.16",
-        "connect-flash": "^0.1.1",
-        "css-loader": "^0.27.1",
-        "extract-text-webpack-plugin": "^2.1.0",
-        "node-sass": "^4.5.0",
-        "postcss-loader": "^1.3.3",
-        "sass-loader": "^6.0.3",
-        "style-loader": "^0.13.2",
-        "webpack-closure-compiler": "^2.1.4",
-        "webpack-manifest-plugin": "^1.1.0"
-    }
+  "name": "nightlifeapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start_dev": "nodemon server.js --ext js,jsx",
+    "build": "webpack --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "nodemon": "^1.11.0",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.7.7",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.2.1",
+    "babel-preset-es2015": "^6.18.0",
+    "webpack": "^2.4.1",
+    "babili-webpack-plugin": "0.0.11",
+    "bitbar-webpack-progress-plugin": "^0.1.3",
+    "browserslist": "^1.7.6",
+    "clean-webpack-plugin": "^0.1.16",
+    "connect-flash": "^0.1.1",
+    "css-loader": "^0.27.1",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "node-sass": "^4.5.0",
+    "postcss-loader": "^1.3.3",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.13.2",
+    "webpack-closure-compiler": "^2.1.4",
+    "webpack-manifest-plugin": "^1.1.0"
+  }
 }

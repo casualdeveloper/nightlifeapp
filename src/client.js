@@ -1,5 +1,5 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Component = require("./components/Component.jsx");
+import {Component} from "./components/Component.jsx";
 
-ReactDOM.render(React.createElement(Component), document);
+ReactDOM.render(<Component/>, document.getElementById("main"));

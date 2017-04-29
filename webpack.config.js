@@ -8,12 +8,12 @@ module.exports = {
         path: path.join(__dirname, "/public")
     },
     module: {
-        loaders: [{
-            test: /\.jsx$/,
+        rules: [{
+            test: /\.js$||.jsx$/,
             exclude: /node_modules/,
             loader: "babel-loader",
             options: {
-                presets: ["react"]
+                presets: ["react","es2015"]
             }
 
         }]
