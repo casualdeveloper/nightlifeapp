@@ -1,5 +1,5 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
-import {Component} from "./components/Component.jsx";
+import App from "./components/App.jsx";
 
-ReactDOM.render(<Component/>, document.getElementById("main"));
+ReactDOM.render(<App/>, document.getElementById("main"));
