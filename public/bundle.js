@@ -11181,7 +11181,8 @@ var Cards = function Cards(props) {
 var Card = function Card(props) {
     return _react2.default.createElement(
         "div",
-        { className: "card" },
+        { className: "card home-card" },
+        _react2.default.createElement("div", { className: "home-card-tint" }),
         _react2.default.createElement("img", { className: "card-img-top img-fluid", src: props.img, alt: "Card image cap" }),
         _react2.default.createElement(
             "div",

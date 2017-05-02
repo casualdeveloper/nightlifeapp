@@ -40,7 +40,8 @@ const Cards = (props) =>{
 
 const Card = (props) =>{
     return (
-        <div className="card">
+        <div className="card home-card">
+            <div className="home-card-tint"></div>
             <img className="card-img-top img-fluid" src={props.img} alt="Card image cap" />
             <div className="card-block">
                 <h4 className="card-title">{props.name}</h4>
