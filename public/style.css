@@ -19,3 +19,10 @@ body {
     width:100%;
     height:100%;
 }
+
+#businessSlides{
+    background:#292b2c;
+    max-height:80vh;
+    min-height:80vh;
+    overflow:hidden;
+}

@@ -25680,7 +25680,7 @@ var Card = function Card(props) {
         _react2.default.createElement(
             "div",
             { className: "card" },
-            _react2.default.createElement("img", { className: "card-img-top img-fluid", src: props.data.image_url, alt: "Card image cap" }),
+            _react2.default.createElement(Carousel, { img1: props.data.photos[0], img2: props.data.photos[1], img3: props.data.photos[2] }),
             _react2.default.createElement(
                 "div",
                 { className: "card-block" },
@@ -25694,6 +25694,59 @@ var Card = function Card(props) {
                     { className: "card-text" },
                     "Some quick example text to build on the card title and make up the bulk of the card's content."
                 )
+            )
+        )
+    );
+};
+
+var Carousel = function Carousel(props) {
+    return _react2.default.createElement(
+        "div",
+        { id: "businessSlides", className: "carousel slide", "data-ride": "carousel" },
+        _react2.default.createElement(
+            "ol",
+            { className: "carousel-indicators" },
+            _react2.default.createElement("li", { "data-target": "#businessSlides", "data-slide-to": "0", className: "active" }),
+            _react2.default.createElement("li", { "data-target": "#businessSlides", "data-slide-to": "1" }),
+            _react2.default.createElement("li", { "data-target": "#businessSlides", "data-slide-to": "2" })
+        ),
+        _react2.default.createElement(
+            "div",
+            { className: "carousel-inner", role: "listbox" },
+            _react2.default.createElement(
+                "div",
+                { className: "carousel-item justify-content-around active " },
+                _react2.default.createElement("img", { className: "d-block img-fluid", src: props.img1, alt: "First slide" })
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "carousel-item justify-content-around" },
+                _react2.default.createElement("img", { className: "d-block img-fluid", src: props.img2, alt: "Second slide" })
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "carousel-item justify-content-around" },
+                _react2.default.createElement("img", { className: "d-block img-fluid", src: props.img3, alt: "Third slide" })
+            )
+        ),
+        _react2.default.createElement(
+            "a",
+            { className: "carousel-control-prev", href: "#businessSlides", role: "button", "data-slide": "prev" },
+            _react2.default.createElement("span", { className: "carousel-control-prev-icon", "aria-hidden": "true" }),
+            _react2.default.createElement(
+                "span",
+                { className: "sr-only" },
+                "Previous"
+            )
+        ),
+        _react2.default.createElement(
+            "a",
+            { className: "carousel-control-next", href: "#businessSlides", role: "button", "data-slide": "next" },
+            _react2.default.createElement("span", { className: "carousel-control-next-icon", "aria-hidden": "true" }),
+            _react2.default.createElement(
+                "span",
+                { className: "sr-only" },
+                "Next"
             )
         )
     );
