@@ -10959,6 +10959,10 @@ var _Home = __webpack_require__(98);
 
 var _Home2 = _interopRequireDefault(_Home);
 
+var _FullCard = __webpack_require__(225);
+
+var _FullCard2 = _interopRequireDefault(_FullCard);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10990,7 +10994,12 @@ var App = function (_React$Component) {
                 _react2.default.createElement(
                     "div",
                     null,
-                    _react2.default.createElement(_reactRouterDom.Route, { path: "/", component: _Home2.default })
+                    _react2.default.createElement(
+                        _reactRouterDom.Switch,
+                        null,
+                        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: _Home2.default }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: "/:id", component: _FullCard2.default })
+                    )
                 )
             );
         }
@@ -11101,6 +11110,8 @@ var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(199);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11119,16 +11130,28 @@ var Home = function (_React$Component) {
 
         _this.state = {};
         _this.state.data = null;
+        _this.previousLocation = _this.props.location;
         return _this;
     }
 
     _createClass(Home, [{
+        key: "componentWillUpdate",
+        value: function componentWillUpdate(nextProps) {
+            var location = this.props.location;
+            // set previousLocation if props.location is not modal
+            // 
+
+            if (nextProps.history.action !== 'POP' && (!location.state || !location.state.modal)) {
+                this.previousLocation = this.props.location;
+            }
+        }
+    }, {
         key: "componentDidMount",
         value: function componentDidMount() {
             var _this2 = this;
 
             $.ajax({
-                url: "/",
+                url: "/api/search",
                 method: "GET",
                 headers: {
                     "data_fetch": "true"
@@ -11141,7 +11164,14 @@ var Home = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
+            var location = this.props.location;
+
+
+            var isModal = !!(location.state && location.state.modal && this.previousLocation !== location // not initial render
+            );
+
             var loading = this.state.data === null;
+
             return _react2.default.createElement(
                 "div",
                 { className: "container" },
@@ -11155,7 +11185,7 @@ var Home = function (_React$Component) {
                     "h3",
                     null,
                     "LOADING..."
-                ) : _react2.default.createElement(Cards, { data: this.state.data })
+                ) : _react2.default.createElement(Cards, { data: this.state.data, isModal: isModal })
             );
         }
     }]);
@@ -11169,7 +11199,7 @@ exports.default = Home;
 var Cards = function Cards(props) {
     var businesses = props.data.businesses;
     var list = businesses.map(function (data, id) {
-        return _react2.default.createElement(Card, { name: data.name, img: data.image_url, price: data.price, rating: data.rating, key: id });
+        return _react2.default.createElement(Card, { name: data.name, img: data.image_url, price: data.price, rating: data.rating, id: data.id, key: id });
     });
     return _react2.default.createElement(
         "div",
@@ -11180,42 +11210,46 @@ var Cards = function Cards(props) {
 
 var Card = function Card(props) {
     return _react2.default.createElement(
-        "div",
-        { className: "card home-card" },
-        _react2.default.createElement("div", { className: "home-card-tint" }),
-        _react2.default.createElement("img", { className: "card-img-top img-fluid", src: props.img, alt: "Card image cap" }),
+        _reactRouterDom.Link,
+        { to: props.id },
         _react2.default.createElement(
             "div",
-            { className: "card-block" },
+            { className: "card home-card" },
+            _react2.default.createElement("div", { className: "home-card-tint" }),
+            _react2.default.createElement("img", { className: "card-img-top img-fluid", src: props.img, alt: "Card image cap" }),
             _react2.default.createElement(
-                "h4",
-                { className: "card-title" },
-                props.name
-            ),
-            _react2.default.createElement(
-                "p",
-                { className: "card-text" },
-                "Rating: ",
-                props.rating
-            ),
-            _react2.default.createElement(
-                "p",
-                { className: "card-text" },
-                "Price: ",
-                props.price
-            ),
-            _react2.default.createElement(
-                "button",
-                { className: "btn btn-primary" },
-                "Im going"
-            ),
-            _react2.default.createElement(
-                "p",
-                { className: "card-text" },
+                "div",
+                { className: "card-block" },
                 _react2.default.createElement(
-                    "small",
-                    { className: "text-muted" },
-                    "Last updated 3 mins ago"
+                    "h4",
+                    { className: "card-title" },
+                    props.name
+                ),
+                _react2.default.createElement(
+                    "p",
+                    { className: "card-text" },
+                    "Rating: ",
+                    props.rating
+                ),
+                _react2.default.createElement(
+                    "p",
+                    { className: "card-text" },
+                    "Price: ",
+                    props.price
+                ),
+                _react2.default.createElement(
+                    "button",
+                    { className: "btn btn-primary" },
+                    "Im going"
+                ),
+                _react2.default.createElement(
+                    "p",
+                    { className: "card-text" },
+                    _react2.default.createElement(
+                        "small",
+                        { className: "text-muted" },
+                        "Last updated 3 mins ago"
+                    )
                 )
             )
         )
@@ -25562,6 +25596,108 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FullCard = function (_React$Component) {
+    _inherits(FullCard, _React$Component);
+
+    function FullCard(props) {
+        _classCallCheck(this, FullCard);
+
+        var _this = _possibleConstructorReturn(this, (FullCard.__proto__ || Object.getPrototypeOf(FullCard)).call(this, props));
+
+        _this.state = {};
+        _this.state.data = null;
+        return _this;
+    }
+
+    _createClass(FullCard, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            $.ajax({
+                url: "/api/business/" + this.props.match.params.id,
+                method: "GET",
+                headers: {
+                    "data_fetch": "true"
+                }
+            }).always(function (data) {
+                console.log(data);
+                _this2.setState({ data: data });
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var loading = this.state.data === null;
+            return _react2.default.createElement(
+                "div",
+                null,
+                loading ? _react2.default.createElement(
+                    "h1",
+                    { className: "text-center" },
+                    "Loading "
+                ) : _react2.default.createElement(Card, { data: this.state.data })
+            );
+        }
+    }]);
+
+    return FullCard;
+}(_react2.default.Component);
+
+exports.default = FullCard;
+
+
+var Card = function Card(props) {
+    return _react2.default.createElement(
+        "div",
+        { className: "container w-75" },
+        _react2.default.createElement(
+            "div",
+            { className: "card" },
+            _react2.default.createElement("img", { className: "card-img-top img-fluid", src: props.data.image_url, alt: "Card image cap" }),
+            _react2.default.createElement(
+                "div",
+                { className: "card-block" },
+                _react2.default.createElement(
+                    "h1",
+                    { className: "text-center" },
+                    props.data.name
+                ),
+                _react2.default.createElement(
+                    "p",
+                    { className: "card-text" },
+                    "Some quick example text to build on the card title and make up the bulk of the card's content."
+                )
+            )
+        )
+    );
+};
 
 /***/ })
 /******/ ]);

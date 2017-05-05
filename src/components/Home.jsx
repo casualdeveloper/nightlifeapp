@@ -1,14 +1,31 @@
 import React from "react";
 
+import { Link } from "react-router-dom";
+
 export default class Home extends React.Component{
     constructor(props){
         super(props);
         this.state = {};
         this.state.data = null;
+        this.previousLocation = this.props.location
     }
+
+    
+
+    componentWillUpdate(nextProps) {
+        const { location } = this.props
+        // set previousLocation if props.location is not modal
+        // 
+        if (nextProps.history.action !== 'POP' &&
+            (!location.state || !location.state.modal)
+        ) {
+            this.previousLocation = this.props.location
+        }
+    }
+
     componentDidMount(){
         $.ajax({
-            url: "/",
+            url: "/api/search",
             method: "GET",
             headers:{
                 "data_fetch": "true"
@@ -19,12 +36,21 @@ export default class Home extends React.Component{
         });
     }
     render(){
+        const { location } = this.props
+
+        const isModal = !!(
+            location.state &&
+            location.state.modal &&
+            this.previousLocation !== location // not initial render
+        )
+
         const loading = this.state.data === null;
+
         return(
             <div className="container">
                 <h1 className="text-center" >HOME :))</h1>
                 <hr/>
-                { loading?(<h3>LOADING...</h3>):(<Cards data={this.state.data} />)}
+                { loading?(<h3>LOADING...</h3>):(<Cards data={this.state.data} isModal={isModal} />)}
             </div>
         );
     }
@@ -33,13 +59,14 @@ export default class Home extends React.Component{
 const Cards = (props) =>{
     const businesses = props.data.businesses;
     const list = businesses.map((data, id)=>{
-        return <Card name={data.name} img={data.image_url} price={data.price} rating={data.rating} key={id} />
+        return <Card name={data.name} img={data.image_url} price={data.price} rating={data.rating} id={data.id} key={id} />
     });
     return (<div className="card-columns">{list}</div>);
 }
 
 const Card = (props) =>{
     return (
+        <Link to={props.id}>
         <div className="card home-card">
             <div className="home-card-tint"></div>
             <img className="card-img-top img-fluid" src={props.img} alt="Card image cap" />
@@ -51,5 +78,6 @@ const Card = (props) =>{
                 <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
             </div>
         </div>
+        </Link>
     );
 }

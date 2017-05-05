@@ -1,8 +1,9 @@
 import React from "react"
-import {BrowserRouter as Router,Route,Link} from "react-router-dom"
+import {BrowserRouter as Router,Route,Link, Switch} from "react-router-dom"
 
 import About from "./About.jsx";
 import Home from "./Home.jsx";
+import FullCard from "./FullCard.jsx";
 
 export default class App extends React.Component {
     _handleClick () {
@@ -12,7 +13,10 @@ export default class App extends React.Component {
         return (
             <Router>
                 <div>
-                    <Route path="/" component={Home}/>
+                    <Switch>
+                        <Route exact path="/" component={Home}/>
+                        <Route path="/:id" component={FullCard} />
+                    </Switch>
                 </div>
             </Router>
         );
