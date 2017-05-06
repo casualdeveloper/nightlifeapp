@@ -7,20 +7,6 @@ export default class Home extends React.Component{
         super(props);
         this.state = {};
         this.state.data = null;
-        this.previousLocation = this.props.location
-    }
-
-    
-
-    componentWillUpdate(nextProps) {
-        const { location } = this.props
-        // set previousLocation if props.location is not modal
-        // 
-        if (nextProps.history.action !== 'POP' &&
-            (!location.state || !location.state.modal)
-        ) {
-            this.previousLocation = this.props.location
-        }
     }
 
     componentDidMount(){
@@ -36,38 +22,35 @@ export default class Home extends React.Component{
         });
     }
     render(){
-        const { location } = this.props
-
-        const isModal = !!(
-            location.state &&
-            location.state.modal &&
-            this.previousLocation !== location // not initial render
-        )
-
         const loading = this.state.data === null;
 
         return(
             <div className="container">
                 <h1 className="text-center" >HOME :))</h1>
                 <hr/>
-                { loading?(<h3>LOADING...</h3>):(<Cards data={this.state.data} isModal={isModal} />)}
+                { loading?(<h3>LOADING...</h3>):(<Cards data={this.state.data} history={this.props.history} location={this.props.location}/>)}
             </div>
         );
     }
 }
 
 const Cards = (props) =>{
+    //console.log(props);
     const businesses = props.data.businesses;
     const list = businesses.map((data, id)=>{
-        return <Card name={data.name} img={data.image_url} price={data.price} rating={data.rating} id={data.id} key={id} />
+        return <Card name={data.name} img={data.image_url} price={data.price} rating={data.rating} id={data.id} key={id} history={props.history} location={props.location} />
     });
     return (<div className="card-columns">{list}</div>);
 }
 
 const Card = (props) =>{
+    const _click = ()=>{
+        props.history.push(props.id,{modal:true,from:props.location});
+        $("#businessModal").modal("show");
+        
+    }
     return (
-        <Link to={props.id}>
-        <div className="card home-card">
+        <div className="card home-card" onClick={_click}>
             <div className="home-card-tint"></div>
             <img className="card-img-top img-fluid" src={props.img} alt="Card image cap" />
             <div className="card-block">
@@ -78,6 +61,5 @@ const Card = (props) =>{
                 <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
             </div>
         </div>
-        </Link>
     );
 }

@@ -6,6 +6,7 @@ export default class FullCard extends React.Component{
         this.state = {};
         this.state.data = null;
     }
+
     componentDidMount(){
         $.ajax({
             url: "/api/business/"+this.props.match.params.id,
@@ -20,10 +21,35 @@ export default class FullCard extends React.Component{
     }
     render(){
         const loading = this.state.data === null;
+
         return(
             <div>
-                {(loading)?(<h1 className="text-center">Loading </h1>):(<Card data={this.state.data} />)}
-                
+                {(loading)?(<h1 className="text-center">Loading </h1>):(<Card data={this.state.data} />)}       
+            </div>
+        );
+    }
+}
+
+export class Modal extends React.Component{
+    render(){
+        return(
+            <div className="modal fade" id="businessModal" tabIndex="-1" role="dialog" aria-labelledby="business" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button className="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        ...
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -72,6 +98,4 @@ const Carousel = (props) =>{
             </a>
         </div>
     );
-
-    
 }
