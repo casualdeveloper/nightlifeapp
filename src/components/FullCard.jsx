@@ -37,7 +37,8 @@ export class Modal extends React.Component{
         this.state.data = null;
     }
     componentWillReceiveProps(nextProps){
-        const shouldUpdate = !!(nextProps.location.pathname !== this.props.location.pathname);
+        const shouldUpdate = !!((nextProps.location.pathname !== this.props.location.pathname) 
+        && (nextProps.location.state && nextProps.location.state.modal));
         if(!shouldUpdate)
             return;
         this.setState({data:null});
@@ -50,6 +51,11 @@ export class Modal extends React.Component{
         }).always((data)=>{ 
             console.log(data);
             this.setState({data:data});
+        });
+    }
+    componentDidMount(){
+        $("#businessModal").on("hidden.bs.modal",()=>{
+            this.props.history.replace("/");
         });
     }
     render(){
@@ -93,20 +99,20 @@ const Card = (props)=>{
 
 const Carousel = (props) =>{
     return(
-        <div id="businessSlides" className="carousel slide" data-ride="carousel">
+        <div id="businessSlides" className="carousel" data-ride="carousel">
             <ol className="carousel-indicators">
                 <li data-target="#businessSlides" data-slide-to="0" className="active"></li>
                 <li data-target="#businessSlides" data-slide-to="1"></li>
                 <li data-target="#businessSlides" data-slide-to="2"></li>
             </ol>
             <div className="carousel-inner" role="listbox">
-                <div className="carousel-item justify-content-around active ">
+                <div className="carousel-item active ">
                     <img className="d-block img-fluid img-fluid-custom-settings" src={props.img1} alt="First slide" />
                 </div>
-                <div className="carousel-item justify-content-around">
+                <div className="carousel-item ">
                     <img className="d-block img-fluid img-fluid-custom-settings" src={props.img2} alt="Second slide" />
                 </div>
-                <div className="carousel-item justify-content-around">
+                <div className="carousel-item ">
                     <img className="d-block img-fluid img-fluid-custom-settings" src={props.img3} alt="Third slide" />
                 </div>
             </div>

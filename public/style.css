@@ -21,9 +21,13 @@ body {
 }
 
 #businessSlides{
-    max-height:80vh;
-    overflow:hidden;
+    min-height: 500px;
     background:black;
+}
+#businessSlides > .carousel-inner{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 .carousel-control-button{
     background:transparent;
@@ -32,6 +36,7 @@ body {
 
 .img-fluid-custom-settings{
     max-height:500px;
+    margin:auto;
 }
 
 .modal-dialog-custom{
@@ -43,6 +48,18 @@ body {
     .modal-dialog-custom{
         max-width:80% ;
         margin:30px auto;
+    } 
+}
+
+@media (min-width: 576px) and (max-width: 767px){
+    .card-columns{
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+        -webkit-column-gap: 1.25rem;
+        -moz-column-gap: 1.25rem;
+        column-gap: 1.25rem;
+
     } 
 }
 

@@ -11250,7 +11250,7 @@ var Modal = exports.Modal = function (_React$Component2) {
         value: function componentWillReceiveProps(nextProps) {
             var _this4 = this;
 
-            var shouldUpdate = !!(nextProps.location.pathname !== this.props.location.pathname);
+            var shouldUpdate = !!(nextProps.location.pathname !== this.props.location.pathname && nextProps.location.state && nextProps.location.state.modal);
             if (!shouldUpdate) return;
             this.setState({ data: null });
             $.ajax({
@@ -11262,6 +11262,15 @@ var Modal = exports.Modal = function (_React$Component2) {
             }).always(function (data) {
                 console.log(data);
                 _this4.setState({ data: data });
+            });
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this5 = this;
+
+            $("#businessModal").on("hidden.bs.modal", function () {
+                _this5.props.history.replace("/");
             });
         }
     }, {
@@ -11353,7 +11362,7 @@ var Card = function Card(props) {
 var Carousel = function Carousel(props) {
     return _react2.default.createElement(
         "div",
-        { id: "businessSlides", className: "carousel slide", "data-ride": "carousel" },
+        { id: "businessSlides", className: "carousel", "data-ride": "carousel" },
         _react2.default.createElement(
             "ol",
             { className: "carousel-indicators" },
@@ -11366,17 +11375,17 @@ var Carousel = function Carousel(props) {
             { className: "carousel-inner", role: "listbox" },
             _react2.default.createElement(
                 "div",
-                { className: "carousel-item justify-content-around active " },
+                { className: "carousel-item active " },
                 _react2.default.createElement("img", { className: "d-block img-fluid img-fluid-custom-settings", src: props.img1, alt: "First slide" })
             ),
             _react2.default.createElement(
                 "div",
-                { className: "carousel-item justify-content-around" },
+                { className: "carousel-item " },
                 _react2.default.createElement("img", { className: "d-block img-fluid img-fluid-custom-settings", src: props.img2, alt: "Second slide" })
             ),
             _react2.default.createElement(
                 "div",
-                { className: "carousel-item justify-content-around" },
+                { className: "carousel-item " },
                 _react2.default.createElement("img", { className: "d-block img-fluid img-fluid-custom-settings", src: props.img3, alt: "Third slide" })
             )
         ),
@@ -11519,18 +11528,6 @@ var Card = function Card(props) {
                 props.name
             ),
             _react2.default.createElement(
-                "p",
-                { className: "card-text" },
-                "Rating: ",
-                props.rating
-            ),
-            _react2.default.createElement(
-                "p",
-                { className: "card-text" },
-                "Price: ",
-                props.price
-            ),
-            _react2.default.createElement(
                 "button",
                 { className: "btn btn-primary" },
                 "Im going"
@@ -11541,7 +11538,7 @@ var Card = function Card(props) {
                 _react2.default.createElement(
                     "small",
                     { className: "text-muted" },
-                    "Last updated 3 mins ago"
+                    "0 Going"
                 )
             )
         )
