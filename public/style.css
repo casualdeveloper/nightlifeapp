@@ -21,8 +21,31 @@ body {
 }
 
 #businessSlides{
-    background:#292b2c;
     max-height:80vh;
-    min-height:80vh;
     overflow:hidden;
+    background:black;
+}
+.carousel-control-button{
+    background:transparent;
+    border:0px;
+}
+
+.img-fluid-custom-settings{
+    max-height:500px;
+}
+
+.modal-dialog-custom{
+        max-width:100%;
+        margin:30px auto;
+} 
+
+@media (min-width: 768px){
+    .modal-dialog-custom{
+        max-width:80% ;
+        margin:30px auto;
+    } 
+}
+
+.full-card{
+    border:0px;
 }

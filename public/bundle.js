@@ -11042,11 +11042,11 @@ var Routes = function (_React$Component) {
     _createClass(Routes, [{
         key: "render",
         value: function render() {
-            var isModal = this.props.location.state && this.props.location.state.modal;
+            var isModal = this.props.location.state && this.props.location.state.modal && this.props.history.action !== "POP";
             return _react2.default.createElement(
                 "div",
                 null,
-                _react2.default.createElement(_FullCard.Modal, null),
+                _react2.default.createElement(_reactRouterDom.Route, { component: _FullCard.Modal }),
                 _react2.default.createElement(
                     _reactRouterDom.Switch,
                     { location: isModal ? this.props.location.state.from : this.props.location },
@@ -11235,23 +11235,47 @@ exports.default = FullCard;
 var Modal = exports.Modal = function (_React$Component2) {
     _inherits(Modal, _React$Component2);
 
-    function Modal() {
+    function Modal(props) {
         _classCallCheck(this, Modal);
 
-        return _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).apply(this, arguments));
+        var _this3 = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
+
+        _this3.state = {};
+        _this3.state.data = null;
+        return _this3;
     }
 
     _createClass(Modal, [{
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(nextProps) {
+            var _this4 = this;
+
+            var shouldUpdate = !!(nextProps.location.pathname !== this.props.location.pathname);
+            if (!shouldUpdate) return;
+            this.setState({ data: null });
+            $.ajax({
+                url: "/api/business" + nextProps.location.pathname,
+                method: "GET",
+                headers: {
+                    "data_fetch": "true"
+                }
+            }).always(function (data) {
+                console.log(data);
+                _this4.setState({ data: data });
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
             var _React$createElement;
 
+            var loading = this.state.data === null;
             return _react2.default.createElement(
                 "div",
                 { className: "modal fade", id: "businessModal", tabIndex: "-1", role: "dialog", "aria-labelledby": "business", "aria-hidden": "true" },
                 _react2.default.createElement(
                     "div",
-                    { className: "modal-dialog", role: "document" },
+                    { className: "modal-dialog-custom modal-dialog ", role: "document" },
                     _react2.default.createElement(
                         "div",
                         { className: "modal-content" },
@@ -11276,7 +11300,11 @@ var Modal = exports.Modal = function (_React$Component2) {
                         _react2.default.createElement(
                             "div",
                             { className: "modal-body" },
-                            "..."
+                            loading ? _react2.default.createElement(
+                                "h1",
+                                { className: "text-center" },
+                                "Loading "
+                            ) : _react2.default.createElement(Card, { data: this.state.data })
                         ),
                         _react2.default.createElement(
                             "div",
@@ -11302,7 +11330,7 @@ var Card = function Card(props) {
         { className: "container w-75" },
         _react2.default.createElement(
             "div",
-            { className: "card" },
+            { className: "card full-card" },
             _react2.default.createElement(Carousel, { img1: props.data.photos[0], img2: props.data.photos[1], img3: props.data.photos[2] }),
             _react2.default.createElement(
                 "div",
@@ -11339,22 +11367,22 @@ var Carousel = function Carousel(props) {
             _react2.default.createElement(
                 "div",
                 { className: "carousel-item justify-content-around active " },
-                _react2.default.createElement("img", { className: "d-block img-fluid", src: props.img1, alt: "First slide" })
+                _react2.default.createElement("img", { className: "d-block img-fluid img-fluid-custom-settings", src: props.img1, alt: "First slide" })
             ),
             _react2.default.createElement(
                 "div",
                 { className: "carousel-item justify-content-around" },
-                _react2.default.createElement("img", { className: "d-block img-fluid", src: props.img2, alt: "Second slide" })
+                _react2.default.createElement("img", { className: "d-block img-fluid img-fluid-custom-settings", src: props.img2, alt: "Second slide" })
             ),
             _react2.default.createElement(
                 "div",
                 { className: "carousel-item justify-content-around" },
-                _react2.default.createElement("img", { className: "d-block img-fluid", src: props.img3, alt: "Third slide" })
+                _react2.default.createElement("img", { className: "d-block img-fluid img-fluid-custom-settings", src: props.img3, alt: "Third slide" })
             )
         ),
         _react2.default.createElement(
-            "a",
-            { className: "carousel-control-prev", href: "#businessSlides", role: "button", "data-slide": "prev" },
+            "button",
+            { className: "carousel-control-prev carousel-control-button", "data-target": "#businessSlides", role: "button", "data-slide": "prev" },
             _react2.default.createElement("span", { className: "carousel-control-prev-icon", "aria-hidden": "true" }),
             _react2.default.createElement(
                 "span",
@@ -11363,8 +11391,8 @@ var Carousel = function Carousel(props) {
             )
         ),
         _react2.default.createElement(
-            "a",
-            { className: "carousel-control-next", href: "#businessSlides", role: "button", "data-slide": "next" },
+            "button",
+            { className: "carousel-control-next carousel-control-button", "data-target": "#businessSlides", role: "button", "data-slide": "next" },
             _react2.default.createElement("span", { className: "carousel-control-next-icon", "aria-hidden": "true" }),
             _react2.default.createElement(
                 "span",
@@ -11461,7 +11489,6 @@ exports.default = Home;
 
 
 var Cards = function Cards(props) {
-    //console.log(props);
     var businesses = props.data.businesses;
     var list = businesses.map(function (data, id) {
         return _react2.default.createElement(Card, { name: data.name, img: data.image_url, price: data.price, rating: data.rating, id: data.id, key: id, history: props.history, location: props.location });
@@ -11475,7 +11502,7 @@ var Cards = function Cards(props) {
 
 var Card = function Card(props) {
     var _click = function _click() {
-        props.history.push(props.id, { modal: true, from: props.location });
+        props.history.replace(props.id, { modal: true, from: props.location });
         $("#businessModal").modal("show");
     };
     return _react2.default.createElement(

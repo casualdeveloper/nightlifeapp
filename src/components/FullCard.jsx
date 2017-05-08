@@ -31,10 +31,32 @@ export default class FullCard extends React.Component{
 }
 
 export class Modal extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {};
+        this.state.data = null;
+    }
+    componentWillReceiveProps(nextProps){
+        const shouldUpdate = !!(nextProps.location.pathname !== this.props.location.pathname);
+        if(!shouldUpdate)
+            return;
+        this.setState({data:null});
+        $.ajax({
+            url: "/api/business"+nextProps.location.pathname,
+            method: "GET",
+            headers:{
+                "data_fetch": "true"
+            }
+        }).always((data)=>{ 
+            console.log(data);
+            this.setState({data:data});
+        });
+    }
     render(){
+        const loading = this.state.data === null;
         return(
             <div className="modal fade" id="businessModal" tabIndex="-1" role="dialog" aria-labelledby="business" aria-hidden="true">
-                <div className="modal-dialog" role="document">
+                <div className="modal-dialog-custom modal-dialog " role="document">
                     <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -43,7 +65,7 @@ export class Modal extends React.Component{
                         </button>
                     </div>
                     <div className="modal-body">
-                        ...
+                        {(loading)?(<h1 className="text-center">Loading </h1>):(<Card data={this.state.data} />)} 
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -58,7 +80,7 @@ export class Modal extends React.Component{
 const Card = (props)=>{
     return(
         <div className="container w-75">
-            <div className="card">
+            <div className="card full-card">
                 <Carousel img1={props.data.photos[0]} img2={props.data.photos[1]} img3={props.data.photos[2]} />
                 <div className="card-block">
                     <h1 className="text-center">{props.data.name}</h1>
@@ -79,23 +101,23 @@ const Carousel = (props) =>{
             </ol>
             <div className="carousel-inner" role="listbox">
                 <div className="carousel-item justify-content-around active ">
-                    <img className="d-block img-fluid" src={props.img1} alt="First slide" />
+                    <img className="d-block img-fluid img-fluid-custom-settings" src={props.img1} alt="First slide" />
                 </div>
                 <div className="carousel-item justify-content-around">
-                    <img className="d-block img-fluid" src={props.img2} alt="Second slide" />
+                    <img className="d-block img-fluid img-fluid-custom-settings" src={props.img2} alt="Second slide" />
                 </div>
                 <div className="carousel-item justify-content-around">
-                    <img className="d-block img-fluid" src={props.img3} alt="Third slide" />
+                    <img className="d-block img-fluid img-fluid-custom-settings" src={props.img3} alt="Third slide" />
                 </div>
             </div>
-            <a className="carousel-control-prev" href="#businessSlides" role="button" data-slide="prev">
+            <button className="carousel-control-prev carousel-control-button" data-target="#businessSlides" role="button" data-slide="prev">
                 <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span className="sr-only">Previous</span>
-            </a>
-            <a className="carousel-control-next" href="#businessSlides" role="button" data-slide="next">
+            </button>
+            <button className="carousel-control-next carousel-control-button" data-target="#businessSlides" role="button" data-slide="next">
                 <span className="carousel-control-next-icon" aria-hidden="true"></span>
                 <span className="sr-only">Next</span>
-            </a>
+            </button>
         </div>
     );
 }

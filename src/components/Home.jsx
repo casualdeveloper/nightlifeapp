@@ -35,7 +35,6 @@ export default class Home extends React.Component{
 }
 
 const Cards = (props) =>{
-    //console.log(props);
     const businesses = props.data.businesses;
     const list = businesses.map((data, id)=>{
         return <Card name={data.name} img={data.image_url} price={data.price} rating={data.rating} id={data.id} key={id} history={props.history} location={props.location} />
@@ -45,7 +44,7 @@ const Cards = (props) =>{
 
 const Card = (props) =>{
     const _click = ()=>{
-        props.history.push(props.id,{modal:true,from:props.location});
+        props.history.replace(props.id,{modal:true,from:props.location});
         $("#businessModal").modal("show");
         
     }
