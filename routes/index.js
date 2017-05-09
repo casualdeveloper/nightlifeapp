@@ -48,7 +48,7 @@ router.get("/api/business/:id",function(req,res){
     let id = querystring.escape(req.params.id);//precent-encode business id
     console.log(id);
     //pass id from url to option generator
-    request(businessOptions(req.params.id),function(err,res2,body){
+    request(businessOptions(id),function(err,res2,body){
         if(err){
             return console.log(err.message);
         }

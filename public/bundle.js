@@ -11264,9 +11264,6 @@ var Modal = exports.Modal = function (_React$Component2) {
             var shouldUpdate = !!(nextProps.location.pathname !== this.props.location.pathname && nextProps.location.state && nextProps.location.state.modal);
             if (!shouldUpdate) return;
 
-            //for loading screen to render we set data to null
-            this.setState({ data: null });
-
             $.ajax({
                 url: "/api/business" + nextProps.location.pathname,
                 method: "GET"
@@ -11282,6 +11279,11 @@ var Modal = exports.Modal = function (_React$Component2) {
 
             // reseting url to our homepage once modal is dismissed
             $("#businessModal").on("hidden.bs.modal", function () {
+                //setting data to null to render loading component and erase carousel
+                //otherwise carousel will stay and if user decides to go to the full page ids of carousels will interac with each other
+                //making carousel on full page not working correctly
+                //plus when loading other modal user immediately will get loading screen. (2 birds 1 shot??????)
+                _this5.setState({ data: null });
                 _this5.props.history.replace("/");
             });
         }
