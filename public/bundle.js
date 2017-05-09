@@ -11516,26 +11516,37 @@ var Cards = function Cards(props) {
 };
 
 var Card = function Card(props) {
-    var _click = function _click() {
+    var _click = function _click(e) {
+        var target = $(e.target);
+        if (target.data("link") || target.data("imgoingButton")) {
+            return;
+        }
+
         props.history.replace(props.id, { modal: true, from: props.location });
         $("#businessModal").modal("show");
+    };
+    var _imGoing = function _imGoing(e) {
+        console.log("im GOING !");
     };
     return _react2.default.createElement(
         "div",
         { className: "card home-card", onClick: _click },
-        _react2.default.createElement("div", { className: "home-card-tint" }),
         _react2.default.createElement("img", { className: "card-img-top img-fluid", src: props.img, alt: "Card image cap" }),
         _react2.default.createElement(
             "div",
             { className: "card-block" },
             _react2.default.createElement(
-                "h4",
-                { className: "card-title" },
-                props.name
+                _reactRouterDom.Link,
+                { className: "title-link", to: props.id },
+                _react2.default.createElement(
+                    "h4",
+                    { className: "card-title", "data-link": "true" },
+                    props.name
+                )
             ),
             _react2.default.createElement(
                 "button",
-                { className: "btn btn-primary" },
+                { className: "btn btn-primary", "data-imgoing-button": "true", onClick: _imGoing },
                 "Im going"
             ),
             _react2.default.createElement(

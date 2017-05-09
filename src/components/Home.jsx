@@ -41,18 +41,24 @@ const Cards = (props) =>{
 }
 
 const Card = (props) =>{
-    const _click = ()=>{
+    const _click = (e)=>{
+        let target = $(e.target);
+        if(target.data("link") || target.data("imgoingButton")){
+            return;
+        }
+
         props.history.replace(props.id,{modal:true,from:props.location});
         $("#businessModal").modal("show");
-        
+    }
+    const _imGoing = (e) =>{
+        console.log("im GOING !");
     }
     return (
         <div className="card home-card" onClick={_click}>
-            <div className="home-card-tint"></div>
             <img className="card-img-top img-fluid" src={props.img} alt="Card image cap" />
             <div className="card-block">
-                <h4 className="card-title">{props.name}</h4>
-                <button className="btn btn-primary">Im going</button>
+                <Link className="title-link" to={props.id}><h4 className="card-title" data-link="true">{props.name}</h4></Link>
+                <button className="btn btn-primary" data-imgoing-button="true" onClick={_imGoing}>Im going</button>
                 <p className="card-text"><small className="text-muted">0 Going</small></p>
             </div>
         </div>
