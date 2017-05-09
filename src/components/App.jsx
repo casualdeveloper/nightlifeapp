@@ -7,7 +7,7 @@ import FullCard, {Modal as FullCardModal} from "./FullCard.jsx";
 
 //The idea of app is:
 //If user clicks on one of the cards in Home page
-//  onClick event calls 1.function replace on history passing:
+//  onClick event calls 1.function replace that replaces the current entry in the history stack passing to the state:
 //      1.url that is id of business that we use to retrieve more info about it;
 //      2.state that has 2 values: 1.modal set to true; 2."from" that is set to current users location (naturally it is going to be "/" - the homepage)
 //  2.show modal function;

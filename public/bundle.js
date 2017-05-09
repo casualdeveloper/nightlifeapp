@@ -11032,7 +11032,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //The idea of app is:
 //If user clicks on one of the cards in Home page
-//  onClick event calls 1.function replace on history passing:
+//  onClick event calls 1.function replace that replaces the current entry in the history stack passing to the state:
 //      1.url that is id of business that we use to retrieve more info about it;
 //      2.state that has 2 values: 1.modal set to true; 2."from" that is set to current users location (naturally it is going to be "/" - the homepage)
 //  2.show modal function;
@@ -11183,6 +11183,10 @@ var _Loading = __webpack_require__(226);
 
 var _Loading2 = _interopRequireDefault(_Loading);
 
+var _Error = __webpack_require__(227);
+
+var _Error2 = _interopRequireDefault(_Error);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -11228,7 +11232,7 @@ var FullCard = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 null,
-                loading ? _react2.default.createElement(_Loading2.default, null) : _react2.default.createElement(Card, { data: this.state.data })
+                loading ? _react2.default.createElement(_Loading2.default, null) : this.state.data.error ? _react2.default.createElement(_Error2.default, { message: this.state.data.error }) : _react2.default.createElement(Card, { data: this.state.data })
             );
         }
     }]);
@@ -11317,7 +11321,7 @@ var Modal = exports.Modal = function (_React$Component2) {
                         _react2.default.createElement(
                             "div",
                             { className: "modal-body" },
-                            loading ? _react2.default.createElement(_Loading2.default, null) : _react2.default.createElement(Card, { data: this.state.data })
+                            loading ? _react2.default.createElement(_Loading2.default, null) : this.state.data.error ? _react2.default.createElement(_Error2.default, { message: this.state.data.error }) : _react2.default.createElement(Card, { data: this.state.data })
                         ),
                         _react2.default.createElement(
                             "div",
@@ -25894,6 +25898,68 @@ var Loading = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Loading;
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Error = function (_React$Component) {
+    _inherits(Error, _React$Component);
+
+    function Error(props) {
+        _classCallCheck(this, Error);
+
+        var _this = _possibleConstructorReturn(this, (Error.__proto__ || Object.getPrototypeOf(Error)).call(this, props));
+
+        _this.state = {};
+        _this.state.message = props.message;
+        return _this;
+    }
+
+    _createClass(Error, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "container text-center" },
+                this.state.message ? _react2.default.createElement(
+                    "h2",
+                    null,
+                    this.state.message
+                ) : _react2.default.createElement(
+                    "h2",
+                    null,
+                    "Something went wrong, please try again later..."
+                )
+            );
+        }
+    }]);
+
+    return Error;
+}(_react2.default.Component);
+
+exports.default = Error;
 
 /***/ })
 /******/ ]);

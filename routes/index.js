@@ -30,7 +30,13 @@ router.get("/api/search",function(req,res){
         if(err){
             return console.log(err.message);
         }  
-        json = JSON.parse(body);
+        try {
+            json = JSON.parse(body);
+        } catch (e) {
+            return res.status(200).json({
+                error: "Failed to retrieve valid data from yelp API, please check if link is correct or try again later."
+            });
+        }
         res.status(200).json(json);
     });
     
@@ -40,13 +46,21 @@ router.get("/api/search",function(req,res){
 router.get("/api/business/:id",function(req,res){
     let json;
     let id = querystring.escape(req.params.id);//precent-encode business id
+    console.log(id);
     //pass id from url to option generator
-    request(businessOptions(id),function(err,res2,body){
+    request(businessOptions(req.params.id),function(err,res2,body){
         if(err){
             return console.log(err.message);
         }
-        json = JSON.parse(body);
+        try {
+            json = JSON.parse(body);
+        } catch (e) {
+            return res.status(200).json({
+                error: "Failed to retrieve valid data from yelp API, please check if link is correct or try again later."
+            });
+        }
         res.status(200).json(json);
+        
     });
 });
 
