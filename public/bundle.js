@@ -11030,6 +11030,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+//The idea of app is:
+//If user clicks on one of the cards in Home page
+//  onClick event calls 1.function replace on history passing:
+//      1.url that is id of business that we use to retrieve more info about it;
+//      2.state that has 2 values: 1.modal set to true; 2."from" that is set to current users location (naturally it is going to be "/" - the homepage)
+//  2.show modal function;
+//otherwise user is redirected by route to /:id location id being business id that will be used to retrieve data about it thour props.match.params.id
 var Routes = function (_React$Component) {
     _inherits(Routes, _React$Component);
 
@@ -11042,6 +11049,7 @@ var Routes = function (_React$Component) {
     _createClass(Routes, [{
         key: "render",
         value: function render() {
+            //check if user is accessing modal or full page
             var isModal = this.props.location.state && this.props.location.state.modal && this.props.history.action !== "POP";
             return _react2.default.createElement(
                 "div",
@@ -11190,6 +11198,7 @@ var FullCard = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (FullCard.__proto__ || Object.getPrototypeOf(FullCard)).call(this, props));
 
         _this.state = {};
+        //setting data to null for loading screen to render
         _this.state.data = null;
         return _this;
     }
@@ -11201,10 +11210,7 @@ var FullCard = function (_React$Component) {
 
             $.ajax({
                 url: "/api/business/" + this.props.match.params.id,
-                method: "GET",
-                headers: {
-                    "data_fetch": "true"
-                }
+                method: "GET"
             }).always(function (data) {
                 console.log(data);
                 _this2.setState({ data: data });
@@ -11250,15 +11256,16 @@ var Modal = exports.Modal = function (_React$Component2) {
         value: function componentWillReceiveProps(nextProps) {
             var _this4 = this;
 
+            //Avoiding new request to server and rerender if the same modal or full page is accessed 
             var shouldUpdate = !!(nextProps.location.pathname !== this.props.location.pathname && nextProps.location.state && nextProps.location.state.modal);
             if (!shouldUpdate) return;
+
+            //for loading screen to render we set data to null
             this.setState({ data: null });
+
             $.ajax({
                 url: "/api/business" + nextProps.location.pathname,
-                method: "GET",
-                headers: {
-                    "data_fetch": "true"
-                }
+                method: "GET"
             }).always(function (data) {
                 console.log(data);
                 _this4.setState({ data: data });
@@ -11269,6 +11276,7 @@ var Modal = exports.Modal = function (_React$Component2) {
         value: function componentDidMount() {
             var _this5 = this;
 
+            // reseting url to our homepage once modal is dismissed
             $("#businessModal").on("hidden.bs.modal", function () {
                 _this5.props.history.replace("/");
             });
@@ -11448,6 +11456,7 @@ var Home = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
         _this.state = {};
+        //setting data to null for loading sreen to render
         _this.state.data = null;
         return _this;
     }
@@ -11459,10 +11468,7 @@ var Home = function (_React$Component) {
 
             $.ajax({
                 url: "/api/search",
-                method: "GET",
-                headers: {
-                    "data_fetch": "true"
-                }
+                method: "GET"
             }).always(function (data) {
                 console.log(data);
                 _this2.setState({ data: data });

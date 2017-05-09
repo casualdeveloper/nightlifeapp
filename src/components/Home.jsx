@@ -6,16 +6,14 @@ export default class Home extends React.Component{
     constructor(props){
         super(props);
         this.state = {};
+        //setting data to null for loading sreen to render
         this.state.data = null;
     }
 
     componentDidMount(){
         $.ajax({
             url: "/api/search",
-            method: "GET",
-            headers:{
-                "data_fetch": "true"
-            }
+            method: "GET"
         }).always((data)=>{ 
             console.log(data);
             this.setState({data:data});

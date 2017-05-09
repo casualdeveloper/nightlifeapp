@@ -4,16 +4,14 @@ export default class FullCard extends React.Component{
     constructor(props){
         super(props);
         this.state = {};
+        //setting data to null for loading screen to render
         this.state.data = null;
     }
 
     componentDidMount(){
         $.ajax({
             url: "/api/business/"+this.props.match.params.id,
-            method: "GET",
-            headers:{
-                "data_fetch": "true"
-            }
+            method: "GET"
         }).always((data)=>{ 
             console.log(data);
             this.setState({data:data});
@@ -37,23 +35,25 @@ export class Modal extends React.Component{
         this.state.data = null;
     }
     componentWillReceiveProps(nextProps){
+        //Avoiding new request to server and rerender if the same modal or full page is accessed 
         const shouldUpdate = !!((nextProps.location.pathname !== this.props.location.pathname) 
         && (nextProps.location.state && nextProps.location.state.modal));
         if(!shouldUpdate)
             return;
+
+        //for loading screen to render we set data to null
         this.setState({data:null});
+        
         $.ajax({
             url: "/api/business"+nextProps.location.pathname,
-            method: "GET",
-            headers:{
-                "data_fetch": "true"
-            }
+            method: "GET"
         }).always((data)=>{ 
             console.log(data);
             this.setState({data:data});
         });
     }
     componentDidMount(){
+        // reseting url to our homepage once modal is dismissed
         $("#businessModal").on("hidden.bs.modal",()=>{
             this.props.history.replace("/");
         });
