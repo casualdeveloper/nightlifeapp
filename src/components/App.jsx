@@ -11,7 +11,7 @@ import FullCard, {Modal as FullCardModal} from "./FullCard.jsx";
 //      1.url that is id of business that we use to retrieve more info about it;
 //      2.state that has 2 values: 1.modal set to true; 2."from" that is set to current users location (naturally it is going to be "/" - the homepage)
 //  2.show modal function;
-//otherwise user is redirected by route to /:id location id being business id that will be used to retrieve data about it thour props.match.params.id
+//otherwise user is redirected by route to /:id location id being business id that will be used to retrieve data about it through props.match.params.id
 class Routes extends React.Component {
     render () {
         //check if user is accessing modal or full page

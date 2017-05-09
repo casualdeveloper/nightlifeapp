@@ -2,6 +2,8 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
+import Loading from "./Loading.jsx";
+
 export default class Home extends React.Component{
     constructor(props){
         super(props);
@@ -26,7 +28,7 @@ export default class Home extends React.Component{
             <div className="container">
                 <h1 className="text-center" >HOME :))</h1>
                 <hr/>
-                { loading?(<h3>LOADING...</h3>):(<Cards data={this.state.data} history={this.props.history} location={this.props.location}/>)}
+                { loading?(<Loading />):(<Cards data={this.state.data} history={this.props.history} location={this.props.location}/>)}
             </div>
         );
     }

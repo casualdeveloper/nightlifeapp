@@ -11036,7 +11036,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //      1.url that is id of business that we use to retrieve more info about it;
 //      2.state that has 2 values: 1.modal set to true; 2."from" that is set to current users location (naturally it is going to be "/" - the homepage)
 //  2.show modal function;
-//otherwise user is redirected by route to /:id location id being business id that will be used to retrieve data about it thour props.match.params.id
+//otherwise user is redirected by route to /:id location id being business id that will be used to retrieve data about it through props.match.params.id
 var Routes = function (_React$Component) {
     _inherits(Routes, _React$Component);
 
@@ -11179,6 +11179,10 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Loading = __webpack_require__(226);
+
+var _Loading2 = _interopRequireDefault(_Loading);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -11224,11 +11228,7 @@ var FullCard = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 null,
-                loading ? _react2.default.createElement(
-                    "h1",
-                    { className: "text-center" },
-                    "Loading "
-                ) : _react2.default.createElement(Card, { data: this.state.data })
+                loading ? _react2.default.createElement(_Loading2.default, null) : _react2.default.createElement(Card, { data: this.state.data })
             );
         }
     }]);
@@ -11317,11 +11317,7 @@ var Modal = exports.Modal = function (_React$Component2) {
                         _react2.default.createElement(
                             "div",
                             { className: "modal-body" },
-                            loading ? _react2.default.createElement(
-                                "h1",
-                                { className: "text-center" },
-                                "Loading "
-                            ) : _react2.default.createElement(Card, { data: this.state.data })
+                            loading ? _react2.default.createElement(_Loading2.default, null) : _react2.default.createElement(Card, { data: this.state.data })
                         ),
                         _react2.default.createElement(
                             "div",
@@ -11439,6 +11435,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(89);
 
+var _Loading = __webpack_require__(226);
+
+var _Loading2 = _interopRequireDefault(_Loading);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11488,11 +11488,7 @@ var Home = function (_React$Component) {
                     "HOME :))"
                 ),
                 _react2.default.createElement("hr", null),
-                loading ? _react2.default.createElement(
-                    "h3",
-                    null,
-                    "LOADING..."
-                ) : _react2.default.createElement(Cards, { data: this.state.data, history: this.props.history, location: this.props.location })
+                loading ? _react2.default.createElement(_Loading2.default, null) : _react2.default.createElement(Cards, { data: this.state.data, history: this.props.history, location: this.props.location })
             );
         }
     }]);
@@ -25843,6 +25839,61 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Loading = function (_React$Component) {
+    _inherits(Loading, _React$Component);
+
+    function Loading() {
+        _classCallCheck(this, Loading);
+
+        return _possibleConstructorReturn(this, (Loading.__proto__ || Object.getPrototypeOf(Loading)).apply(this, arguments));
+    }
+
+    _createClass(Loading, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "text-center" },
+                _react2.default.createElement("i", { className: "fa fa-spinner fa-pulse fa-3x fa-fw" }),
+                _react2.default.createElement(
+                    "span",
+                    { className: "sr-only" },
+                    "Loading..."
+                )
+            );
+        }
+    }]);
+
+    return Loading;
+}(_react2.default.Component);
+
+exports.default = Loading;
 
 /***/ })
 /******/ ]);

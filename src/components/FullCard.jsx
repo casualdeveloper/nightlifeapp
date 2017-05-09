@@ -1,4 +1,5 @@
 import React from "react";
+import Loading from "./Loading.jsx";
 
 export default class FullCard extends React.Component{
     constructor(props){
@@ -22,7 +23,7 @@ export default class FullCard extends React.Component{
 
         return(
             <div>
-                {(loading)?(<h1 className="text-center">Loading </h1>):(<Card data={this.state.data} />)}       
+                {(loading)?(<Loading />):(<Card data={this.state.data} />)}       
             </div>
         );
     }
@@ -71,7 +72,7 @@ export class Modal extends React.Component{
                         </button>
                     </div>
                     <div className="modal-body">
-                        {(loading)?(<h1 className="text-center">Loading </h1>):(<Card data={this.state.data} />)} 
+                        {(loading)?(<Loading />):(<Card data={this.state.data} />)} 
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
