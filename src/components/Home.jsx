@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import Loading from "./Loading.jsx";
+import ErrorMessage from "./ErrorMessage.jsx";
 
 export default class Home extends React.Component{
     constructor(props){
@@ -28,7 +29,10 @@ export default class Home extends React.Component{
             <div className="container">
                 <h1 className="text-center" >HOME :))</h1>
                 <hr/>
-                { loading?(<Loading />):(<Cards data={this.state.data} history={this.props.history} location={this.props.location}/>)}
+                { loading?(<Loading />)
+                    :(this.state.data.error)
+                        ?(<ErrorMessage message={this.state.data.error} />)
+                        :(<Cards data={this.state.data} history={this.props.history} location={this.props.location}/>)}
             </div>
         );
     }

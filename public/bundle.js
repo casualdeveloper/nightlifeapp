@@ -11490,6 +11490,10 @@ var _Loading = __webpack_require__(60);
 
 var _Loading2 = _interopRequireDefault(_Loading);
 
+var _ErrorMessage = __webpack_require__(228);
+
+var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11539,7 +11543,7 @@ var Home = function (_React$Component) {
                     "HOME :))"
                 ),
                 _react2.default.createElement("hr", null),
-                loading ? _react2.default.createElement(_Loading2.default, null) : _react2.default.createElement(Cards, { data: this.state.data, history: this.props.history, location: this.props.location })
+                loading ? _react2.default.createElement(_Loading2.default, null) : this.state.data.error ? _react2.default.createElement(_ErrorMessage2.default, { message: this.state.data.error }) : _react2.default.createElement(Cards, { data: this.state.data, history: this.props.history, location: this.props.location })
             );
         }
     }]);
