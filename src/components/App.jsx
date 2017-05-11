@@ -1,7 +1,6 @@
 import React from "react"
 import {BrowserRouter as Router,Route,Link, Switch} from "react-router-dom"
 
-import About from "./About.jsx";
 import Home from "./Home.jsx";
 import FullCard, {Modal as FullCardModal} from "./FullCard.jsx";
 

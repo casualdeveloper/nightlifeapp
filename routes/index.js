@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const request = require("request");
+const request = require("request-promise-native");
 const querystring = require("querystring");
 
 const searchOptions = {  
-    url: "https://api.yelp.com/v3/businesses/search?location=la&categories=nightlife",
+    uri: "https://api.yelp.com/v3/businesses/search?location=la&categories=nightlife",
     method: "GET",
     headers: {
         "Accept": "application/json",
@@ -24,44 +24,34 @@ const businessOptions = function(id){
     }
 }
 
-router.get("/api/search",function(req,res){
+const parseJSON = function(str){
     let json;
-    request(searchOptions, function(err, res2, body) {
-        if(err){
-            return console.log(err.message);
-        }  
-        try {
-            json = JSON.parse(body);
-        } catch (e) {
-            return res.status(200).json({
-                error: "Failed to retrieve valid data from yelp API, please check if link is correct or try again later."
-            });
-        }
-        res.status(200).json(json);
-    });
-    
+    try{
+        json = JSON.parse(str);
+    } catch (e){
+        json = {error: "Failed to retrieve valid data from yelp API, please check if link is correct or try again later."}
+    }
+    return json;
+}
+
+router.get("/api/search",function(req,res){
+    request(searchOptions)
+        .then(json=>{
+            res.status(200).json(parseJSON(json));
+        }).catch(err=>{
+            res.status(200).json({error:err.message});
+        });
 });
 
 
 router.get("/api/business/:id",function(req,res){
-    let json;
     let id = querystring.escape(req.params.id);//precent-encode business id
-    console.log(id);
-    //pass id from url to option generator
-    request(businessOptions(id),function(err,res2,body){
-        if(err){
-            return console.log(err.message);
-        }
-        try {
-            json = JSON.parse(body);
-        } catch (e) {
-            return res.status(200).json({
-                error: "Failed to retrieve valid data from yelp API, please check if link is correct or try again later."
-            });
-        }
-        res.status(200).json(json);
-        
-    });
+    request(businessOptions(id))
+        .then(json=>{
+            res.status(200).json(parseJSON(json));
+        }).catch(err=>{
+            res.status(200).json({error:"Failed to retrieve data from yelp Api, please try again later."});
+        })
 });
 
 router.get("*", function (req, res) {
