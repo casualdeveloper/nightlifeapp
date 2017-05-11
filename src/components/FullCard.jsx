@@ -1,6 +1,6 @@
 import React from "react";
 import Loading from "./Loading.jsx";
-import Error from "./Error.jsx";
+import ErrorMessage from "./ErrorMessage.jsx";
 
 export default class FullCard extends React.Component{
     constructor(props){
@@ -26,7 +26,7 @@ export default class FullCard extends React.Component{
             <div>
                 {(loading)?(<Loading />)
                     :(this.state.data.error)
-                        ?(<Error message={this.state.data.error} />)
+                        ?(<ErrorMessage message={this.state.data.error} />)
                         :(<Card data={this.state.data} />)
                 }    
             </div>
@@ -81,8 +81,8 @@ export class Modal extends React.Component{
                     <div className="modal-body">
                         {(loading)?(<Loading />)
                             :(this.state.data.error)
-                                ?(<Error message={this.state.data.error} />)
-                                :(<Card data={this.state.data} />)
+                                ?(<ErrorMessage message={this.state.data.error} />)
+                                :(<Card data={this.state.data} modal={true} />)
                         } 
                     </div>
                     <div className="modal-footer">
@@ -97,12 +97,12 @@ export class Modal extends React.Component{
 
 const Card = (props)=>{
     return(
-        <div className="container w-75">
+        <div className="container">
             <div className="card full-card">
                 <Carousel img1={props.data.photos[0]} img2={props.data.photos[1]} img3={props.data.photos[2]} />
                 <div className="card-block">
                     <h1 className="text-center">{props.data.name}</h1>
-                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <Reviews modal={props.modal} reviews={props.data.reviews} />
                 </div>
             </div>
         </div>
@@ -139,3 +139,34 @@ const Carousel = (props) =>{
         </div>
     );
 }
+
+const Reviews = (props) =>{
+    let reviews = props.reviews;
+    if(props.modal){
+        reviews = reviews.splice(0,1);
+    }
+    return(
+        <div className="reviews">
+            {reviews.map((obj,i)=>{
+                //date apie yelp api is returned as 2017-05-10 09:24:16
+                //since we don't need hrs, mins and secs we split at " " <-- space
+                //and pick the first part of date
+                const date = obj.time_created.split(" ")[0].toString();
+                return (
+                    <div key={i}>
+                        <div className="card card-outline-secondary mb-3 text-center card-comment" >
+                            <div className="card-block">
+                                <blockquote className="card-blockquote">
+                                <p>{obj.text}</p>
+                                <footer><cite title="Source Title">{obj.user.name} - {date}</cite></footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                        {(i!==reviews.length-1)?<hr/>:null}
+                    </div>
+                );
+            })}
+            
+        </div>
+    );
+} 

@@ -55,10 +55,25 @@ body {
     } 
 }
 
+@media (min-width: 576px){
+    .modal-dialog-custom > .modal-content > .modal-body > .container {
+        width: initial;
+        max-width: 100%;
+    }
+}
+
 .full-card{
     border:0px;
 }
 
 .title-link{
     color:#292b2c !important;
+}
+
+.card-comment{
+    border:0px;
+}
+
+.reviews{
+    background: rgba(40,40,40,0.04);
 }

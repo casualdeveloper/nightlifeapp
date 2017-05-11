@@ -45,6 +45,7 @@ const Cards = (props) =>{
 const Card = (props) =>{
     const _click = (e)=>{
         let target = $(e.target);
+        //prevent modal showing up if user clicks on title link or "im Going" button
         if(target.data("link") || target.data("imgoingButton")){
             return;
         }

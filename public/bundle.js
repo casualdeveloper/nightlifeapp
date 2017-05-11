@@ -11160,68 +11160,7 @@ ReactDOM.render(React.createElement(_App2.default, null), document.getElementByI
 
 /***/ }),
 /* 99 */,
-/* 100 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Error = function (_React$Component) {
-    _inherits(Error, _React$Component);
-
-    function Error(props) {
-        _classCallCheck(this, Error);
-
-        var _this = _possibleConstructorReturn(this, (Error.__proto__ || Object.getPrototypeOf(Error)).call(this, props));
-
-        _this.state = {};
-        _this.state.message = props.message;
-        return _this;
-    }
-
-    _createClass(Error, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "div",
-                { className: "container text-center" },
-                this.state.message ? _react2.default.createElement(
-                    "h2",
-                    null,
-                    this.state.message
-                ) : _react2.default.createElement(
-                    "h2",
-                    null,
-                    "Something went wrong, please try again later..."
-                )
-            );
-        }
-    }]);
-
-    return Error;
-}(_react2.default.Component);
-
-exports.default = Error;
-
-/***/ }),
+/* 100 */,
 /* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11243,9 +11182,9 @@ var _Loading = __webpack_require__(60);
 
 var _Loading2 = _interopRequireDefault(_Loading);
 
-var _Error = __webpack_require__(100);
+var _ErrorMessage = __webpack_require__(228);
 
-var _Error2 = _interopRequireDefault(_Error);
+var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11292,7 +11231,7 @@ var FullCard = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 null,
-                loading ? _react2.default.createElement(_Loading2.default, null) : this.state.data.error ? _react2.default.createElement(_Error2.default, { message: this.state.data.error }) : _react2.default.createElement(Card, { data: this.state.data })
+                loading ? _react2.default.createElement(_Loading2.default, null) : this.state.data.error ? _react2.default.createElement(_ErrorMessage2.default, { message: this.state.data.error }) : _react2.default.createElement(Card, { data: this.state.data })
             );
         }
     }]);
@@ -11383,7 +11322,7 @@ var Modal = exports.Modal = function (_React$Component2) {
                         _react2.default.createElement(
                             "div",
                             { className: "modal-body" },
-                            loading ? _react2.default.createElement(_Loading2.default, null) : this.state.data.error ? _react2.default.createElement(_Error2.default, { message: this.state.data.error }) : _react2.default.createElement(Card, { data: this.state.data })
+                            loading ? _react2.default.createElement(_Loading2.default, null) : this.state.data.error ? _react2.default.createElement(_ErrorMessage2.default, { message: this.state.data.error }) : _react2.default.createElement(Card, { data: this.state.data, modal: true })
                         ),
                         _react2.default.createElement(
                             "div",
@@ -11406,7 +11345,7 @@ var Modal = exports.Modal = function (_React$Component2) {
 var Card = function Card(props) {
     return _react2.default.createElement(
         "div",
-        { className: "container w-75" },
+        { className: "container" },
         _react2.default.createElement(
             "div",
             { className: "card full-card" },
@@ -11419,11 +11358,7 @@ var Card = function Card(props) {
                     { className: "text-center" },
                     props.data.name
                 ),
-                _react2.default.createElement(
-                    "p",
-                    { className: "card-text" },
-                    "Some quick example text to build on the card title and make up the bulk of the card's content."
-                )
+                _react2.default.createElement(Reviews, { modal: props.modal, reviews: props.data.reviews })
             )
         )
     );
@@ -11479,6 +11414,56 @@ var Carousel = function Carousel(props) {
                 "Next"
             )
         )
+    );
+};
+
+var Reviews = function Reviews(props) {
+    var reviews = props.reviews;
+    if (props.modal) {
+        reviews = reviews.splice(0, 1);
+    }
+    return _react2.default.createElement(
+        "div",
+        { className: "reviews" },
+        reviews.map(function (obj, i) {
+            //date apie yelp api is returned as 2017-05-10 09:24:16
+            //since we don't need hrs, mins and secs we split at " " <-- space
+            //and pick the first part of date
+            var date = obj.time_created.split(" ")[0].toString();
+            return _react2.default.createElement(
+                "div",
+                { key: i },
+                _react2.default.createElement(
+                    "div",
+                    { className: "card card-outline-secondary mb-3 text-center card-comment" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "card-block" },
+                        _react2.default.createElement(
+                            "blockquote",
+                            { className: "card-blockquote" },
+                            _react2.default.createElement(
+                                "p",
+                                null,
+                                obj.text
+                            ),
+                            _react2.default.createElement(
+                                "footer",
+                                null,
+                                _react2.default.createElement(
+                                    "cite",
+                                    { title: "Source Title" },
+                                    obj.user.name,
+                                    " - ",
+                                    date
+                                )
+                            )
+                        )
+                    )
+                ),
+                i !== reviews.length - 1 ? _react2.default.createElement("hr", null) : null
+            );
+        })
     );
 };
 
@@ -11580,6 +11565,7 @@ var Cards = function Cards(props) {
 var Card = function Card(props) {
     var _click = function _click(e) {
         var target = $(e.target);
+        //prevent modal showing up if user clicks on title link or "im Going" button
         if (target.data("link") || target.data("imgoingButton")) {
             return;
         }
@@ -25905,6 +25891,68 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ErrorMessage = function (_React$Component) {
+    _inherits(ErrorMessage, _React$Component);
+
+    function ErrorMessage(props) {
+        _classCallCheck(this, ErrorMessage);
+
+        var _this = _possibleConstructorReturn(this, (ErrorMessage.__proto__ || Object.getPrototypeOf(ErrorMessage)).call(this, props));
+
+        _this.state = {};
+        _this.state.message = props.message;
+        return _this;
+    }
+
+    _createClass(ErrorMessage, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "container text-center" },
+                this.state.message ? _react2.default.createElement(
+                    "h2",
+                    null,
+                    this.state.message
+                ) : _react2.default.createElement(
+                    "h2",
+                    null,
+                    "Something went wrong, please try again later..."
+                )
+            );
+        }
+    }]);
+
+    return ErrorMessage;
+}(_react2.default.Component);
+
+exports.default = ErrorMessage;
 
 /***/ })
 /******/ ]);
