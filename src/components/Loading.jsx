@@ -4,8 +4,8 @@ export default class Loading extends React.Component{
     render(){
         return(
             <div className="text-center">
-                <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                <span className="sr-only">Loading...</span>
+                <h3>Loading...</h3>
+                <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
             </div>
         );
     }

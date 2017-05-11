@@ -18,7 +18,6 @@ export default class Home extends React.Component{
             url: "/api/search",
             method: "GET"
         }).always((data)=>{ 
-            console.log(data);
             this.setState({data:data});
         });
     }
@@ -65,7 +64,7 @@ const Card = (props) =>{
             <img className="card-img-top img-fluid" src={props.img} alt="Card image cap" />
             <div className="card-block">
                 <Link className="title-link" to={props.id}><h4 className="card-title" data-link="true">{props.name}</h4></Link>
-                <button className="btn btn-primary" data-imgoing-button="true" onClick={_imGoing}>Im going</button>
+                <button className="btn btn-primary mb-2" data-imgoing-button="true" onClick={_imGoing}>Im going</button>
                 <p className="card-text"><small className="text-muted">0 Going</small></p>
             </div>
         </div>

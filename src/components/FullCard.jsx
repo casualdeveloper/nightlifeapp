@@ -1,6 +1,7 @@
 import React from "react";
 import Loading from "./Loading.jsx";
 import ErrorMessage from "./ErrorMessage.jsx";
+import {Link} from "react-router-dom";
 
 export default class FullCard extends React.Component{
     constructor(props){
@@ -15,7 +16,6 @@ export default class FullCard extends React.Component{
             url: "/api/business/"+this.props.match.params.id,
             method: "GET"
         }).always((data)=>{ 
-            console.log(data);
             this.setState({data:data});
         });
     }
@@ -51,7 +51,6 @@ export class Modal extends React.Component{
             url: "/api/business"+nextProps.location.pathname,
             method: "GET"
         }).always((data)=>{ 
-            console.log(data);
             this.setState({data:data});
         });
     }
@@ -63,7 +62,7 @@ export class Modal extends React.Component{
             //making carousel on full page not working correctly
             //plus when loading other modal user immediately will get loading screen. (2 birds 1 shot??????)
             this.setState({data:null});
-            this.props.history.replace("/");
+            this.props.history.push("/");
         });
     }
     render(){
@@ -72,12 +71,6 @@ export class Modal extends React.Component{
             <div className="modal fade" id="businessModal" tabIndex="-1" role="dialog" aria-labelledby="business" aria-hidden="true">
                 <div className="modal-dialog-custom modal-dialog " role="document">
                     <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button className="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
                     <div className="modal-body">
                         {(loading)?(<Loading />)
                             :(this.state.data.error)
@@ -99,9 +92,10 @@ const Card = (props)=>{
     return(
         <div className="container">
             <div className="card full-card">
+                {(props.modal)?(<Link className="title-link" to={props.data.id} target="_blank"><h1 className="text-center mb-3">{props.data.name}</h1></Link>):null}
                 <Carousel img1={props.data.photos[0]} img2={props.data.photos[1]} img3={props.data.photos[2]} />
                 <div className="card-block">
-                    <h1 className="text-center">{props.data.name}</h1>
+                    {(!props.modal)?(<h1 className="text-center mb-3">{props.data.name}</h1>):null}
                     <Reviews modal={props.modal} reviews={props.data.reviews} />
                 </div>
             </div>

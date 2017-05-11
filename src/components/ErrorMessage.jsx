@@ -8,7 +8,7 @@ export default class ErrorMessage extends React.Component{
     }
     render(){
         return(
-            <div className="container text-center">
+            <div className="container text-center ">
                 {(this.state.message)
                     ?(<h2>{this.state.message}</h2>)
                     :(<h2>Something went wrong, please try again later...</h2>)

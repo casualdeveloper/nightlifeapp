@@ -7340,12 +7340,12 @@ var Loading = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 { className: "text-center" },
-                _react2.default.createElement("i", { className: "fa fa-spinner fa-pulse fa-3x fa-fw" }),
                 _react2.default.createElement(
-                    "span",
-                    { className: "sr-only" },
+                    "h3",
+                    null,
                     "Loading..."
-                )
+                ),
+                _react2.default.createElement("i", { className: "fa fa-circle-o-notch fa-spin fa-3x fa-fw" })
             );
         }
     }]);
@@ -11186,9 +11186,9 @@ var _ErrorMessage = __webpack_require__(228);
 
 var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _reactRouterDom = __webpack_require__(90);
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11219,7 +11219,6 @@ var FullCard = function (_React$Component) {
                 url: "/api/business/" + this.props.match.params.id,
                 method: "GET"
             }).always(function (data) {
-                console.log(data);
                 _this2.setState({ data: data });
             });
         }
@@ -11267,7 +11266,6 @@ var Modal = exports.Modal = function (_React$Component2) {
                 url: "/api/business" + nextProps.location.pathname,
                 method: "GET"
             }).always(function (data) {
-                console.log(data);
                 _this4.setState({ data: data });
             });
         }
@@ -11283,14 +11281,12 @@ var Modal = exports.Modal = function (_React$Component2) {
                 //making carousel on full page not working correctly
                 //plus when loading other modal user immediately will get loading screen. (2 birds 1 shot??????)
                 _this5.setState({ data: null });
-                _this5.props.history.replace("/");
+                _this5.props.history.push("/");
             });
         }
     }, {
         key: "render",
         value: function render() {
-            var _React$createElement;
-
             var loading = this.state.data === null;
             return _react2.default.createElement(
                 "div",
@@ -11301,24 +11297,6 @@ var Modal = exports.Modal = function (_React$Component2) {
                     _react2.default.createElement(
                         "div",
                         { className: "modal-content" },
-                        _react2.default.createElement(
-                            "div",
-                            { className: "modal-header" },
-                            _react2.default.createElement(
-                                "h5",
-                                { className: "modal-title", id: "exampleModalLabel" },
-                                "Modal title"
-                            ),
-                            _react2.default.createElement(
-                                "button",
-                                (_React$createElement = { className: "button" }, _defineProperty(_React$createElement, "className", "close"), _defineProperty(_React$createElement, "data-dismiss", "modal"), _defineProperty(_React$createElement, "aria-label", "Close"), _React$createElement),
-                                _react2.default.createElement(
-                                    "span",
-                                    { "aria-hidden": "true" },
-                                    "\xD7"
-                                )
-                            )
-                        ),
                         _react2.default.createElement(
                             "div",
                             { className: "modal-body" },
@@ -11349,15 +11327,24 @@ var Card = function Card(props) {
         _react2.default.createElement(
             "div",
             { className: "card full-card" },
+            props.modal ? _react2.default.createElement(
+                _reactRouterDom.Link,
+                { className: "title-link", to: props.data.id, target: "_blank" },
+                _react2.default.createElement(
+                    "h1",
+                    { className: "text-center mb-3" },
+                    props.data.name
+                )
+            ) : null,
             _react2.default.createElement(Carousel, { img1: props.data.photos[0], img2: props.data.photos[1], img3: props.data.photos[2] }),
             _react2.default.createElement(
                 "div",
                 { className: "card-block" },
-                _react2.default.createElement(
+                !props.modal ? _react2.default.createElement(
                     "h1",
-                    { className: "text-center" },
+                    { className: "text-center mb-3" },
                     props.data.name
-                ),
+                ) : null,
                 _react2.default.createElement(Reviews, { modal: props.modal, reviews: props.data.reviews })
             )
         )
@@ -11525,7 +11512,6 @@ var Home = function (_React$Component) {
                 url: "/api/search",
                 method: "GET"
             }).always(function (data) {
-                console.log(data);
                 _this2.setState({ data: data });
             });
         }
@@ -11598,7 +11584,7 @@ var Card = function Card(props) {
             ),
             _react2.default.createElement(
                 "button",
-                { className: "btn btn-primary", "data-imgoing-button": "true", onClick: _imGoing },
+                { className: "btn btn-primary mb-2", "data-imgoing-button": "true", onClick: _imGoing },
                 "Im going"
             ),
             _react2.default.createElement(
@@ -25939,7 +25925,7 @@ var ErrorMessage = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 "div",
-                { className: "container text-center" },
+                { className: "container text-center " },
                 this.state.message ? _react2.default.createElement(
                     "h2",
                     null,
