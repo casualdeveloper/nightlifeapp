@@ -3,6 +3,39 @@ import Loading from "./Loading.jsx";
 import ErrorMessage from "./ErrorMessage.jsx";
 import {Link} from "react-router-dom";
 
+const cache = [];
+
+
+//str - business id.
+const searchInCache = (id) =>{
+    for(let i = 0 ; i < cache.length; i++){
+        if(cache[i].id === id){
+            return cache[i];
+        }
+    }
+    return null;
+}
+
+const fetchData = (id) =>{
+    return new Promise((resolve,reject)=>{
+        let data;
+        if(data = searchInCache(id)){
+            resolve(data);
+        }
+
+        $.ajax({
+            url: "/api/business/"+id,
+            method: "GET"
+        }).always((data)=>{ 
+            if(!data.error){
+                cache.push(data);
+            }
+            resolve(data);
+        });
+    });
+    
+}
+
 export default class FullCard extends React.Component{
     constructor(props){
         super(props);
@@ -12,12 +45,11 @@ export default class FullCard extends React.Component{
     }
 
     componentDidMount(){
-        $.ajax({
-            url: "/api/business/"+this.props.match.params.id,
-            method: "GET"
-        }).always((data)=>{ 
-            this.setState({data:data});
-        });
+        fetchData(this.props.match.params.id)
+            .then(data=>{
+                this.setState({data:data});
+            });
+        
     }
     render(){
         const loading = this.state.data === null;
@@ -25,9 +57,9 @@ export default class FullCard extends React.Component{
         return(
             <div>
                 {(loading)?(<Loading />)
-                    :(this.state.data.error)
+                    :((this.state.data.error)
                         ?(<ErrorMessage message={this.state.data.error} />)
-                        :(<Card data={this.state.data} />)
+                        :(<Card data={this.state.data} />))
                 }    
             </div>
         );
@@ -41,28 +73,28 @@ export class Modal extends React.Component{
         this.state.data = null;
     }
     componentWillReceiveProps(nextProps){
-        //Avoiding new request to server and rerender if the same modal or full page is accessed 
-        const shouldUpdate = !!((nextProps.location.pathname !== this.props.location.pathname) 
-        && (nextProps.location.state && nextProps.location.state.modal));
+
+        //Avoiding render if accessing full page not a modal
+        const shouldUpdate = !!(nextProps.location.state && nextProps.location.state.modal);
         if(!shouldUpdate)
             return;
         
-        $.ajax({
-            url: "/api/business"+nextProps.location.pathname,
-            method: "GET"
-        }).always((data)=>{ 
-            this.setState({data:data});
-        });
+        //substring 1 to delete "/" from url ex: "/business-id" ---> "business-id"
+        fetchData(nextProps.location.pathname.substring(1))
+            .then(data=>{
+                this.setState({data:data});
+            });
+
     }
     componentDidMount(){
         // reseting url to our homepage once modal is dismissed
         $("#businessModal").on("hidden.bs.modal",()=>{
             //setting data to null to render loading component and erase carousel
-            //otherwise carousel will stay and if user decides to go to the full page ids of carousels will interac with each other
+            //otherwise carousel will stay and if user decides to go to the full page ids of carousels will interact with each other
             //making carousel on full page not working correctly
-            //plus when loading other modal user immediately will get loading screen. (2 birds 1 shot??????)
+            //plus when loading other modal user immediately will get loading screen.
             this.setState({data:null});
-            this.props.history.push("/");
+            this.props.history.replace("/");
         });
     }
     render(){
@@ -73,9 +105,9 @@ export class Modal extends React.Component{
                     <div className="modal-content">
                     <div className="modal-body">
                         {(loading)?(<Loading />)
-                            :(this.state.data.error)
+                            :((this.state.data.error)
                                 ?(<ErrorMessage message={this.state.data.error} />)
-                                :(<Card data={this.state.data} modal={true} />)
+                                :(<Card data={this.state.data} modal={true} />))
                         } 
                     </div>
                     <div className="modal-footer">
@@ -135,7 +167,7 @@ const Carousel = (props) =>{
 }
 
 const Reviews = (props) =>{
-    let reviews = props.reviews;
+    let reviews = props.reviews.slice(0);
     if(props.modal){
         reviews = reviews.splice(0,1);
     }

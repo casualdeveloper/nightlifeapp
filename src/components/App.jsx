@@ -21,7 +21,7 @@ class Routes extends React.Component {
                 {/* if isModal set to true we are keeping our current location same (avoiding redirect)*/}
                 <Switch location={(isModal)?this.props.location.state.from:this.props.location}>
                     <Route exact path="/" component={Home}/>
-                    <Route path="/:id" component={FullCard}/>
+                    <Route exact path="/:id" component={FullCard}/>
                 </Switch>
             </div>
         );
