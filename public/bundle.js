@@ -11311,14 +11311,31 @@ var FullCard = function (_React$Component) {
             });
         }
     }, {
+        key: "whatShouldRender",
+        value: function whatShouldRender() {
+            if (!this.state) {
+                return null;
+            }
+            //check if loading
+            if (this.state.data === null) {
+                return _react2.default.createElement(_Loading2.default, null);
+            }
+            //check for error
+            if (this.state.data.error) {
+                return _react2.default.createElement(_ErrorMessage2.default, { message: this.state.data.error });
+            }
+            //render content if everything else is OK.
+            return _react2.default.createElement(Card, { data: this.state.data });
+        }
+    }, {
         key: "render",
         value: function render() {
-            var loading = this.state.data === null;
+            var content = this.whatShouldRender();
 
             return _react2.default.createElement(
                 "div",
                 null,
-                loading ? _react2.default.createElement(_Loading2.default, null) : this.state.data.error ? _react2.default.createElement(_ErrorMessage2.default, { message: this.state.data.error }) : _react2.default.createElement(Card, { data: this.state.data })
+                content
             );
         }
     }]);
@@ -11371,9 +11388,26 @@ var Modal = exports.Modal = function (_React$Component2) {
             });
         }
     }, {
+        key: "whatShouldRender",
+        value: function whatShouldRender() {
+            if (!this.state) {
+                return null;
+            }
+            //check if loading
+            if (this.state.data === null) {
+                return _react2.default.createElement(_Loading2.default, null);
+            }
+            //check for error
+            if (this.state.data.error) {
+                return _react2.default.createElement(_ErrorMessage2.default, { message: this.state.data.error });
+            }
+            //render content if everything else is OK.
+            return _react2.default.createElement(Card, { data: this.state.data, modal: true });
+        }
+    }, {
         key: "render",
         value: function render() {
-            var loading = this.state.data === null;
+            var content = this.whatShouldRender();
             return _react2.default.createElement(
                 "div",
                 { className: "modal fade", id: "businessModal", tabIndex: "-1", role: "dialog", "aria-labelledby": "business", "aria-hidden": "true" },
@@ -11386,7 +11420,7 @@ var Modal = exports.Modal = function (_React$Component2) {
                         _react2.default.createElement(
                             "div",
                             { className: "modal-body" },
-                            loading ? _react2.default.createElement(_Loading2.default, null) : this.state.data.error ? _react2.default.createElement(_ErrorMessage2.default, { message: this.state.data.error }) : _react2.default.createElement(Card, { data: this.state.data, modal: true })
+                            content
                         ),
                         _react2.default.createElement(
                             "div",
@@ -11584,38 +11618,93 @@ var Home = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
         _this.state = {};
+        _this.state.search = null;
         //setting data to null for loading sreen to render
         _this.state.data = null;
+        _this._handleSearch = _this._handleSearch.bind(_this);
+
+        //will be used as input ref
+        _this.searchInput;
         return _this;
     }
 
     _createClass(Home, [{
         key: "componentDidMount",
         value: function componentDidMount() {
+            //ref to input
+            this.searchInput = $("#home-search")[0];
+        }
+    }, {
+        key: "_handleSearch",
+        value: function _handleSearch() {
             var _this2 = this;
 
+            var searchingFor = this.searchInput.value;
+            console.log(searchingFor);
+            //for loading screen
+            this.setState({ data: null, search: searchingFor });
             $.ajax({
                 url: "/api/search",
-                method: "GET"
+                method: "POST",
+                data: { str: searchingFor }
             }).always(function (data) {
                 _this2.setState({ data: data });
             });
         }
     }, {
+        key: "whatShouldRender",
+        value: function whatShouldRender() {
+            if (!this.state) {
+                return null;
+            }
+            //check if searched anything (to prevent loading animation if no search has been done)
+            if (this.state.search === null) {
+                return null;
+            }
+            //check if loading
+            if (this.state.data === null) {
+                return _react2.default.createElement(_Loading2.default, null);
+            }
+            //check for error
+            if (this.state.data.error) {
+                return _react2.default.createElement(_ErrorMessage2.default, { message: this.state.data.error });
+            }
+            //render content if everything else is OK.
+            return _react2.default.createElement(Cards, { data: this.state.data, history: this.props.history, location: this.props.location });
+        }
+    }, {
         key: "render",
         value: function render() {
-            var loading = this.state.data === null;
+            var content = this.whatShouldRender();
 
             return _react2.default.createElement(
                 "div",
                 { className: "container" },
                 _react2.default.createElement(
                     "h1",
-                    { className: "text-center" },
+                    { className: "text-center mb-3" },
                     "HOME :))"
                 ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "w-50 mx-auto" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "input-group" },
+                        _react2.default.createElement("input", { id: "home-search", type: "text", className: "form-control", placeholder: "Search for..." }),
+                        _react2.default.createElement(
+                            "span",
+                            { className: "input-group-btn" },
+                            _react2.default.createElement(
+                                "button",
+                                { className: "btn btn-secondary", type: "button", onClick: this._handleSearch },
+                                "Go!"
+                            )
+                        )
+                    )
+                ),
                 _react2.default.createElement("hr", null),
-                loading ? _react2.default.createElement(_Loading2.default, null) : this.state.data.error ? _react2.default.createElement(_ErrorMessage2.default, { message: this.state.data.error }) : _react2.default.createElement(Cards, { data: this.state.data, history: this.props.history, location: this.props.location })
+                content
             );
         }
     }]);
@@ -11627,6 +11716,7 @@ exports.default = Home;
 
 
 var Cards = function Cards(props) {
+    console.log(props);
     var businesses = props.data.businesses;
     var list = businesses.map(function (data, id) {
         return _react2.default.createElement(Card, { name: data.name, img: data.image_url, price: data.price, rating: data.rating, id: data.id, key: id, history: props.history, location: props.location });

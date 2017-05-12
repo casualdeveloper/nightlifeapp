@@ -2,13 +2,15 @@ const router = require("express").Router();
 const request = require("request-promise-native");
 const querystring = require("querystring");
 
-const searchOptions = {  
-    url: "https://api.yelp.com/v3/businesses/search?location=la&categories=nightlife",
-    method: "GET",
-    headers: {
-        "Accept": "application/json",
-        "Accept-Charset": "utf-8",
-        "Authorization": require("../config.json").access_token
+const searchOptions = function(str) {  
+    return {   
+        url: `https://api.yelp.com/v3/businesses/search?location=${str}&categories=nightlife`,
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Accept-Charset": "utf-8",
+            "Authorization": require("../config.json").access_token
+        }
     }
 };
 
@@ -47,8 +49,9 @@ const parseJSON = function(str){
     return json;
 }
 
-router.get("/api/search",function(req,res){
-    request(searchOptions)
+router.post("/api/search",function(req,res){
+    let str = querystring.escape(req.body.str);//precent-encode search string
+    request(searchOptions(str))
         .then(json=>{
             res.status(200).json(parseJSON(json));
         }).catch(err=>{

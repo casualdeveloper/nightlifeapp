@@ -51,16 +51,27 @@ export default class FullCard extends React.Component{
             });
         
     }
+    whatShouldRender(){
+        if(!this.state){
+            return null;
+        }
+        //check if loading
+        if(this.state.data === null){
+            return (<Loading />);
+        }
+        //check for error
+        if(this.state.data.error){
+            return (<ErrorMessage message={this.state.data.error} />);
+        }
+        //render content if everything else is OK.
+        return (<Card data={this.state.data} />);
+    }
     render(){
-        const loading = this.state.data === null;
+        const content = this.whatShouldRender();
 
         return(
             <div>
-                {(loading)?(<Loading />)
-                    :((this.state.data.error)
-                        ?(<ErrorMessage message={this.state.data.error} />)
-                        :(<Card data={this.state.data} />))
-                }    
+                {content}
             </div>
         );
     }
@@ -97,18 +108,29 @@ export class Modal extends React.Component{
             this.props.history.replace("/");
         });
     }
+    whatShouldRender(){
+        if(!this.state){
+            return null;
+        }
+        //check if loading
+        if(this.state.data === null){
+            return (<Loading />);
+        }
+        //check for error
+        if(this.state.data.error){
+            return (<ErrorMessage message={this.state.data.error} />);
+        }
+        //render content if everything else is OK.
+        return (<Card data={this.state.data} modal={true}/>);
+    }
     render(){
-        const loading = this.state.data === null;
+        const content = this.whatShouldRender();
         return(
             <div className="modal fade" id="businessModal" tabIndex="-1" role="dialog" aria-labelledby="business" aria-hidden="true">
                 <div className="modal-dialog-custom modal-dialog " role="document">
                     <div className="modal-content">
                     <div className="modal-body">
-                        {(loading)?(<Loading />)
-                            :((this.state.data.error)
-                                ?(<ErrorMessage message={this.state.data.error} />)
-                                :(<Card data={this.state.data} modal={true} />))
-                        } 
+                        {content}
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
