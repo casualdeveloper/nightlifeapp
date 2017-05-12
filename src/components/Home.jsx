@@ -25,7 +25,6 @@ export default class Home extends React.Component{
 
     _handleSearch(){
         let searchingFor = this.searchInput.value
-        console.log(searchingFor);
         //for loading screen
         this.setState({data:null,search:searchingFor});
         $.ajax({
@@ -33,6 +32,7 @@ export default class Home extends React.Component{
             method: "POST",
             data:{str:searchingFor}
         }).always((data)=>{ 
+            console.log(data);
             this.setState({data:data});
         });
     }
@@ -81,7 +81,6 @@ export default class Home extends React.Component{
 }
 
 const Cards = (props) =>{
-    console.log(props);
     const businesses = props.data.businesses;
     const list = businesses.map((data, id)=>{
         return <Card name={data.name} img={data.image_url} price={data.price} rating={data.rating} id={data.id} key={id} history={props.history} location={props.location} />
@@ -101,7 +100,13 @@ const Card = (props) =>{
         $("#businessModal").modal("show");
     }
     const _imGoing = (e) =>{
-        console.log("im GOING !");
+        $.ajax({
+            method:"POST",
+            url:"/api/business/increment",
+            data:{id:props.id}
+        }).always((data)=>{
+            console.log(data);
+        });
     }
     return (
         <div className="card home-card" onClick={_click}>

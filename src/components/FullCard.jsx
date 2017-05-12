@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 const cache = [];
 
 
-//str - business id.
+//id as business id.
 const searchInCache = (id) =>{
     for(let i = 0 ; i < cache.length; i++){
         if(cache[i].id === id){

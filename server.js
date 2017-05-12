@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+
+mongoose.connect("mongodb://localhost:27017/nightlifeapp");
 
 app.use(express.static("public"));
 

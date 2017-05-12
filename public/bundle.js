@@ -11258,7 +11258,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var cache = [];
 
-//str - business id.
+//id as business id.
 var searchInCache = function searchInCache(id) {
     for (var i = 0; i < cache.length; i++) {
         if (cache[i].id === id) {
@@ -11640,7 +11640,6 @@ var Home = function (_React$Component) {
             var _this2 = this;
 
             var searchingFor = this.searchInput.value;
-            console.log(searchingFor);
             //for loading screen
             this.setState({ data: null, search: searchingFor });
             $.ajax({
@@ -11648,6 +11647,7 @@ var Home = function (_React$Component) {
                 method: "POST",
                 data: { str: searchingFor }
             }).always(function (data) {
+                console.log(data);
                 _this2.setState({ data: data });
             });
         }
@@ -11716,7 +11716,6 @@ exports.default = Home;
 
 
 var Cards = function Cards(props) {
-    console.log(props);
     var businesses = props.data.businesses;
     var list = businesses.map(function (data, id) {
         return _react2.default.createElement(Card, { name: data.name, img: data.image_url, price: data.price, rating: data.rating, id: data.id, key: id, history: props.history, location: props.location });
@@ -11740,7 +11739,13 @@ var Card = function Card(props) {
         $("#businessModal").modal("show");
     };
     var _imGoing = function _imGoing(e) {
-        console.log("im GOING !");
+        $.ajax({
+            method: "POST",
+            url: "/api/business/increment",
+            data: { id: props.id }
+        }).always(function (data) {
+            console.log(data);
+        });
     };
     return _react2.default.createElement(
         "div",
