@@ -54,21 +54,21 @@ router.post("/api/search",function(req,res){
     let str = querystring.escape(req.body.str);//precent-encode search string
     request(searchOptions(str))
         .then(json=>{
-            let resJson = parseJSON(json);
-            if(!resJson.error){
-                businessQueries.searchBusiness(resJson.businesses[0].id,(err,count)=>{
+            let resJSON = parseJSON(json);
+            if(!resJSON.error){
+                businessQueries.parseDataWithCounter(resJSON.businesses,(err,data)=>{
                     if(err){
-                        return console.log(err);
+                        return res.status(200).json(resJSON);
                     }
-                    resJson.businesses[0].count = count;
-                    return res.status(200).json(resJson);
+                    
+                    resJSON.businesses=data;
+                    return res.status(200).json(resJSON);
                 });
             }else{
-                return res.status(200).json(resJson);
+                return res.status(200).json(resJSON);
             }
-            
-            
         }).catch(err=>{
+            console.log(err);
             res.status(200).json({error:"Failed to retrieve data from yelp Api, please try again later."});
         });
 });

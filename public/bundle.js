@@ -11716,9 +11716,12 @@ exports.default = Home;
 
 
 var Cards = function Cards(props) {
+
+    var going = !props.data.counter ? "0" : props.data.counter;
+
     var businesses = props.data.businesses;
-    var list = businesses.map(function (data, id) {
-        return _react2.default.createElement(Card, { name: data.name, img: data.image_url, price: data.price, rating: data.rating, id: data.id, key: id, history: props.history, location: props.location });
+    var list = businesses.map(function (data, i) {
+        return _react2.default.createElement(Card, { data: data, key: i, history: props.history, location: props.location });
     });
     return _react2.default.createElement(
         "div",
@@ -11727,59 +11730,88 @@ var Cards = function Cards(props) {
     );
 };
 
-var Card = function Card(props) {
-    var _click = function _click(e) {
-        var target = $(e.target);
-        //prevent modal showing up if user clicks on title link or "im Going" button
-        if (target.data("link") || target.data("imgoingButton")) {
-            return;
-        }
+var Card = function (_React$Component2) {
+    _inherits(Card, _React$Component2);
 
-        props.history.replace(props.id, { modal: true, from: props.location });
-        $("#businessModal").modal("show");
-    };
-    var _imGoing = function _imGoing(e) {
-        $.ajax({
-            method: "POST",
-            url: "/api/business/increment",
-            data: { id: props.id }
-        }).always(function (data) {
-            console.log(data);
-        });
-    };
-    return _react2.default.createElement(
-        "div",
-        { className: "card home-card", onClick: _click },
-        _react2.default.createElement("img", { className: "card-img-top img-fluid", src: props.img, alt: "Card image cap" }),
-        _react2.default.createElement(
-            "div",
-            { className: "card-block" },
-            _react2.default.createElement(
-                _reactRouterDom.Link,
-                { className: "title-link", to: props.id },
+    function Card(props) {
+        _classCallCheck(this, Card);
+
+        var _this3 = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
+
+        _this3.state = {};
+        _this3.state.going = props.data.counter ? props.data.counter : "0";
+        _this3._imGoing = _this3._imGoing.bind(_this3);
+        _this3._click = _this3._click.bind(_this3);
+        return _this3;
+    }
+
+    _createClass(Card, [{
+        key: "_click",
+        value: function _click(e) {
+            var target = $(e.target);
+            //prevent modal showing up if user clicks on title link or "im Going" button
+            if (target.data("link") || target.data("imgoingButton")) {
+                return;
+            }
+
+            this.props.history.replace(this.props.data.id, { modal: true, from: this.props.location });
+            $("#businessModal").modal("show");
+        }
+    }, {
+        key: "_imGoing",
+        value: function _imGoing(e) {
+            var _this4 = this;
+
+            $.ajax({
+                method: "POST",
+                url: "/api/business/increment",
+                data: { id: this.props.data.id }
+            }).always(function (data) {
+                _this4.setState({ going: data.counter });
+                console.log(data);
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "card home-card", onClick: this._click },
+                _react2.default.createElement("img", { className: "card-img-top img-fluid", src: this.props.data.image_url, alt: "Card image cap" }),
                 _react2.default.createElement(
-                    "h4",
-                    { className: "card-title", "data-link": "true" },
-                    props.name
+                    "div",
+                    { className: "card-block" },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { className: "title-link", to: this.props.data.id },
+                        _react2.default.createElement(
+                            "h4",
+                            { className: "card-title", "data-link": "true" },
+                            this.props.data.name
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        { className: "btn btn-primary mb-2", "data-imgoing-button": "true", onClick: this._imGoing },
+                        "Im going"
+                    ),
+                    _react2.default.createElement(
+                        "p",
+                        { className: "card-text" },
+                        _react2.default.createElement(
+                            "small",
+                            { className: "text-muted" },
+                            this.state.going,
+                            " Going"
+                        )
+                    )
                 )
-            ),
-            _react2.default.createElement(
-                "button",
-                { className: "btn btn-primary mb-2", "data-imgoing-button": "true", onClick: _imGoing },
-                "Im going"
-            ),
-            _react2.default.createElement(
-                "p",
-                { className: "card-text" },
-                _react2.default.createElement(
-                    "small",
-                    { className: "text-muted" },
-                    "0 Going"
-                )
-            )
-        )
-    );
-};
+            );
+        }
+    }]);
+
+    return Card;
+}(_react2.default.Component);
 
 /***/ }),
 /* 102 */

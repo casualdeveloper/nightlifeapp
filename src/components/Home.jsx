@@ -81,41 +81,55 @@ export default class Home extends React.Component{
 }
 
 const Cards = (props) =>{
+
+    let going = (!props.data.counter)?"0":props.data.counter;
+
     const businesses = props.data.businesses;
-    const list = businesses.map((data, id)=>{
-        return <Card name={data.name} img={data.image_url} price={data.price} rating={data.rating} id={data.id} key={id} history={props.history} location={props.location} />
+    const list = businesses.map((data, i)=>{
+        return <Card data={data} key={i} history={props.history} location={props.location} />
     });
     return (<div className="card-columns">{list}</div>);
 }
 
-const Card = (props) =>{
-    const _click = (e)=>{
+class Card extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {};
+        this.state.going = (props.data.counter)?props.data.counter:"0";
+        this._imGoing = this._imGoing.bind(this);
+        this._click = this._click.bind(this);
+    }
+    _click(e){
         let target = $(e.target);
         //prevent modal showing up if user clicks on title link or "im Going" button
         if(target.data("link") || target.data("imgoingButton")){
             return;
         }
 
-        props.history.replace(props.id,{modal:true,from:props.location});
+        this.props.history.replace(this.props.data.id,{modal:true,from:this.props.location});
         $("#businessModal").modal("show");
     }
-    const _imGoing = (e) =>{
+
+    _imGoing(e){
         $.ajax({
             method:"POST",
             url:"/api/business/increment",
-            data:{id:props.id}
+            data:{id:this.props.data.id}
         }).always((data)=>{
+            this.setState({going:data.counter});
             console.log(data);
         });
     }
-    return (
-        <div className="card home-card" onClick={_click}>
-            <img className="card-img-top img-fluid" src={props.img} alt="Card image cap" />
-            <div className="card-block">
-                <Link className="title-link" to={props.id}><h4 className="card-title" data-link="true">{props.name}</h4></Link>
-                <button className="btn btn-primary mb-2" data-imgoing-button="true" onClick={_imGoing}>Im going</button>
-                <p className="card-text"><small className="text-muted">0 Going</small></p>
+    render(){
+        return (
+            <div className="card home-card" onClick={this._click}>
+                <img className="card-img-top img-fluid" src={this.props.data.image_url} alt="Card image cap" />
+                <div className="card-block">
+                    <Link className="title-link" to={this.props.data.id}><h4 className="card-title" data-link="true">{this.props.data.name}</h4></Link>
+                    <button className="btn btn-primary mb-2" data-imgoing-button="true" onClick={this._imGoing}>Im going</button>
+                    <p className="card-text"><small className="text-muted">{this.state.going} Going</small></p>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
