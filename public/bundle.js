@@ -11248,6 +11248,10 @@ var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 
 var _reactRouterDom = __webpack_require__(56);
 
+var _GoingButton = __webpack_require__(227);
+
+var _GoingButton2 = _interopRequireDefault(_GoingButton);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11271,10 +11275,19 @@ var searchInCache = function searchInCache(id) {
 var fetchData = function fetchData(id) {
     return new Promise(function (resolve, reject) {
         var data = void 0;
+        //search for data in cache
+        //if found retrieve and update counter variable - (amount of people that are going to event...)
         if (data = searchInCache(id)) {
-            resolve(data);
+            $.ajax({
+                url: "/api/business/counter/" + id,
+                method: "GET"
+            }).always(function (counterObj) {
+                data.counter = counterObj.counter;
+                resolve(data);
+            });
         }
 
+        //if no data was found in cache retrieve it from server 
         $.ajax({
             url: "/api/business/" + id,
             method: "GET"
@@ -11441,6 +11454,7 @@ var Modal = exports.Modal = function (_React$Component2) {
 }(_react2.default.Component);
 
 var Card = function Card(props) {
+    console.log(props);
     return _react2.default.createElement(
         "div",
         { className: "container" },
@@ -11465,7 +11479,8 @@ var Card = function Card(props) {
                     { className: "text-center mb-3" },
                     props.data.name
                 ) : null,
-                _react2.default.createElement(Reviews, { modal: props.modal, reviews: props.data.reviews })
+                _react2.default.createElement(Reviews, { modal: props.modal, reviews: props.data.reviews }),
+                _react2.default.createElement(_GoingButton2.default, { counter: props.data.counter, id: props.data.id })
             )
         )
     );
@@ -11600,6 +11615,10 @@ var _Loading2 = _interopRequireDefault(_Loading);
 var _ErrorMessage = __webpack_require__(61);
 
 var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
+
+var _GoingButton = __webpack_require__(227);
+
+var _GoingButton2 = _interopRequireDefault(_GoingButton);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11739,8 +11758,6 @@ var Card = function (_React$Component2) {
         var _this3 = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
 
         _this3.state = {};
-        _this3.state.going = props.data.counter ? props.data.counter : "0";
-        _this3._imGoing = _this3._imGoing.bind(_this3);
         _this3._click = _this3._click.bind(_this3);
         return _this3;
     }
@@ -11753,23 +11770,8 @@ var Card = function (_React$Component2) {
             if (target.data("link") || target.data("imgoingButton")) {
                 return;
             }
-
             this.props.history.replace(this.props.data.id, { modal: true, from: this.props.location });
             $("#businessModal").modal("show");
-        }
-    }, {
-        key: "_imGoing",
-        value: function _imGoing(e) {
-            var _this4 = this;
-
-            $.ajax({
-                method: "POST",
-                url: "/api/business/increment",
-                data: { id: this.props.data.id }
-            }).always(function (data) {
-                _this4.setState({ going: data.counter });
-                console.log(data);
-            });
         }
     }, {
         key: "render",
@@ -11790,21 +11792,7 @@ var Card = function (_React$Component2) {
                             this.props.data.name
                         )
                     ),
-                    _react2.default.createElement(
-                        "button",
-                        { className: "btn btn-primary mb-2", "data-imgoing-button": "true", onClick: this._imGoing },
-                        "Im going"
-                    ),
-                    _react2.default.createElement(
-                        "p",
-                        { className: "card-text" },
-                        _react2.default.createElement(
-                            "small",
-                            { className: "text-muted" },
-                            this.state.going,
-                            " Going"
-                        )
-                    )
+                    _react2.default.createElement(_GoingButton2.default, { counter: this.props.data.counter, id: this.props.data.id })
                 )
             );
         }
@@ -26094,6 +26082,91 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GoingButton = function (_React$Component) {
+    _inherits(GoingButton, _React$Component);
+
+    function GoingButton(props) {
+        _classCallCheck(this, GoingButton);
+
+        var _this = _possibleConstructorReturn(this, (GoingButton.__proto__ || Object.getPrototypeOf(GoingButton)).call(this, props));
+
+        _this.state = {};
+        //going - value for amount of people that are going
+        //if no counter is found in business obj we simply set going to default value (0)
+        _this.state.going = props.counter ? props.counter : "0";
+        _this._imGoing = _this._imGoing.bind(_this);
+        return _this;
+    }
+
+    _createClass(GoingButton, [{
+        key: "_imGoing",
+        value: function _imGoing(e) {
+            var _this2 = this;
+
+            $.ajax({
+                method: "POST",
+                url: "/api/business/increment",
+                data: { id: this.props.id }
+            }).always(function (data) {
+                _this2.setState({ going: data.counter });
+                console.log(data);
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                null,
+                _react2.default.createElement(
+                    "button",
+                    { className: "btn btn-primary mb-2", "data-imgoing-button": "true", onClick: this._imGoing },
+                    "Im going"
+                ),
+                _react2.default.createElement(
+                    "p",
+                    { className: "card-text" },
+                    _react2.default.createElement(
+                        "small",
+                        { className: "text-muted" },
+                        this.state.going,
+                        " Going"
+                    )
+                )
+            );
+        }
+    }]);
+
+    return GoingButton;
+}(_react2.default.Component);
+
+exports.default = GoingButton;
 
 /***/ })
 /******/ ]);

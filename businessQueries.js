@@ -5,6 +5,7 @@ const querystring = require("querystring");
 const parseDataWithCounter = function(arr, cb){
     return new Promise((resolve,reject) => {
 
+        //requests to the database retrieveing "counter" data of business
         const promises = arr.map(obj => getBusinessCounter(obj.id));
 
         Promise.all(promises)
@@ -13,6 +14,7 @@ const parseDataWithCounter = function(arr, cb){
                 arr.map((business,i) => {
                     business.counter = data[i];
                 });
+                //return new counter-parsed array
                 if(cb){
                     cb(null,arr);
                 }
@@ -27,12 +29,25 @@ const parseDataWithCounter = function(arr, cb){
     
 }
 
-const getBusinessCounter = function(id,cb){
+const getBusinessCounter = function(id,noError,cb){
+    //making noError optional
+    if(typeof(noError)==="function"){
+        cb=noError;
+        noError = false;
+    }
+    //if noError set to true error will be replace with default value (0);
     return new Promise((resolve,reject)=>{
         business.findOne({"id":id},"counter",(err,foundBusiness)=>{
             if(err){
                 if(cb){
-                    cb(err);
+                    if(noError){
+                        cb(null,0)
+                    }else{
+                        cb(err);
+                    }
+                }
+                if(noError){
+                    return resolve(0);
                 }
                 return reject(err);
             }
@@ -54,6 +69,8 @@ const getBusinessCounter = function(id,cb){
 }
 
 const incrementBusiness = function(id,cb){
+    //seraches for business and updates it;
+    //if not business found by id, automatically creates new document for it with "counter" value of 1;
     business.findOneAndUpdate({"id":id},{ $inc: { "counter" : 1 }},{new:true,upsert:true},(err,foundBusiness)=>{
         if(err){
             return cb({error:"Couldn't update database, please try again later..."});

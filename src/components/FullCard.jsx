@@ -2,6 +2,7 @@ import React from "react";
 import Loading from "./Loading.jsx";
 import ErrorMessage from "./ErrorMessage.jsx";
 import {Link} from "react-router-dom";
+import GoingButton from "./GoingButton.jsx";
 
 const cache = [];
 
@@ -19,10 +20,19 @@ const searchInCache = (id) =>{
 const fetchData = (id) =>{
     return new Promise((resolve,reject)=>{
         let data;
+        //search for data in cache
+        //if found retrieve and update counter variable - (amount of people that are going to event...)
         if(data = searchInCache(id)){
-            resolve(data);
+            $.ajax({
+                url: "/api/business/counter/"+id,
+                method: "GET"
+            }).always((counterObj)=>{ 
+                data.counter = counterObj.counter;
+                resolve(data);
+            });
         }
 
+        //if no data was found in cache retrieve it from server 
         $.ajax({
             url: "/api/business/"+id,
             method: "GET"
@@ -143,6 +153,7 @@ export class Modal extends React.Component{
 }
 
 const Card = (props)=>{
+    console.log(props);
     return(
         <div className="container">
             <div className="card full-card">
@@ -151,6 +162,7 @@ const Card = (props)=>{
                 <div className="card-block">
                     {(!props.modal)?(<h1 className="text-center mb-3">{props.data.name}</h1>):null}
                     <Reviews modal={props.modal} reviews={props.data.reviews} />
+                    <GoingButton counter={props.data.counter} id={props.data.id} />
                 </div>
             </div>
         </div>

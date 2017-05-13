@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import Loading from "./Loading.jsx";
 import ErrorMessage from "./ErrorMessage.jsx";
+import GoingButton from "./GoingButton.jsx";
 
 export default class Home extends React.Component{
     constructor(props){
@@ -95,8 +96,6 @@ class Card extends React.Component {
     constructor(props){
         super(props);
         this.state = {};
-        this.state.going = (props.data.counter)?props.data.counter:"0";
-        this._imGoing = this._imGoing.bind(this);
         this._click = this._click.bind(this);
     }
     _click(e){
@@ -105,20 +104,8 @@ class Card extends React.Component {
         if(target.data("link") || target.data("imgoingButton")){
             return;
         }
-
         this.props.history.replace(this.props.data.id,{modal:true,from:this.props.location});
         $("#businessModal").modal("show");
-    }
-
-    _imGoing(e){
-        $.ajax({
-            method:"POST",
-            url:"/api/business/increment",
-            data:{id:this.props.data.id}
-        }).always((data)=>{
-            this.setState({going:data.counter});
-            console.log(data);
-        });
     }
     render(){
         return (
@@ -126,8 +113,7 @@ class Card extends React.Component {
                 <img className="card-img-top img-fluid" src={this.props.data.image_url} alt="Card image cap" />
                 <div className="card-block">
                     <Link className="title-link" to={this.props.data.id}><h4 className="card-title" data-link="true">{this.props.data.name}</h4></Link>
-                    <button className="btn btn-primary mb-2" data-imgoing-button="true" onClick={this._imGoing}>Im going</button>
-                    <p className="card-text"><small className="text-muted">{this.state.going} Going</small></p>
+                    <GoingButton counter={this.props.data.counter} id={this.props.data.id} />
                 </div>
             </div>
         );
