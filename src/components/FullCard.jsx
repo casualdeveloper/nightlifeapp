@@ -153,7 +153,6 @@ export class Modal extends React.Component{
 }
 
 const Card = (props)=>{
-    console.log(props);
     return(
         <div className="container">
             <div className="card full-card">

@@ -13,7 +13,8 @@ import FullCard, {Modal as FullCardModal} from "./FullCard.jsx";
 //otherwise user is redirected by route to /:id location id being business id that will be used to retrieve data about it through props.match.params.id
 class Routes extends React.Component {
     render () {
-        //check if user is accessing modal or full page
+        //check if user is accessing modal or full pag
+        console.log(window.user);
         const isModal = (this.props.location.state && this.props.location.state.modal && this.props.history.action !== "POP");
         return (
             <div>

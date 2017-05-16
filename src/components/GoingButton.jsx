@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 export default class GoingButton extends React.Component {
     constructor(props){
@@ -24,6 +25,7 @@ export default class GoingButton extends React.Component {
             <div>
                 <button className="btn btn-primary mb-2" data-imgoing-button="true" onClick={this._imGoing}>Im going</button>
                 <p className="card-text"><small className="text-muted">{this.state.going} Going</small></p>
+                <a href="/auth/twitter" >LOGIN</a>
             </div>
         );
     }

@@ -4,10 +4,7 @@ const userSchema = new mongoose.Schema({
     profileName: String,
     uid: String,
     goingTo: [{
-        _id: {
-            ref: "business",
-            type: mongoose.Schema.Types.ObjectId
-        }
+        id: String
     }]
 });
 
