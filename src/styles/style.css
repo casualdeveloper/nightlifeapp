@@ -19,8 +19,7 @@ body {
 #businessSlides > .carousel-inner{
     position: absolute;
     top: 50%;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 .carousel-control-button{
     background:transparent;
@@ -78,4 +77,3 @@ body {
 .reviews{
     background: rgba(40,40,40,0.04);
 }
-/*# sourceMappingURL=style.css.map*/
