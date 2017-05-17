@@ -100,8 +100,8 @@ class Card extends React.Component {
     }
     _click(e){
         let target = $(e.target);
-        //prevent modal showing up if user clicks on title link or "im Going" button
-        if(target.data("link") || target.data("imgoingButton")){
+        //prevent modal showing up if user clicks on specific items like link or "Im going" button (don't forget to add data-nomodal attribute to these items)
+        if(target.data("nomodal")){
             return;
         }
         this.props.history.replace(this.props.data.id,{modal:true,from:this.props.location});
@@ -112,8 +112,8 @@ class Card extends React.Component {
             <div className="card home-card" onClick={this._click}>
                 <img className="card-img-top img-fluid" src={this.props.data.image_url} alt="Card image cap" />
                 <div className="card-block">
-                    <Link className="title-link" to={this.props.data.id}><h4 className="card-title" data-link="true">{this.props.data.name}</h4></Link>
-                    <GoingButton counter={this.props.data.counter} id={this.props.data.id} />
+                    <Link className="title-link" to={this.props.data.id}><h4 className="card-title" data-nomodal="true">{this.props.data.name}</h4></Link>
+                    <GoingButton counter={this.props.data.counter} id={this.props.data.id} history={this.props.history} />
                 </div>
             </div>
         );

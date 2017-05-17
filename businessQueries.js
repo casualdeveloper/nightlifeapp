@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const business = require("./models/business.js");
-const querystring = require("querystring");
 
 const parseDataWithCounter = function(arr, cb){
     return new Promise((resolve,reject) => {
@@ -68,15 +67,31 @@ const getBusinessCounter = function(id,noError,cb){
     
 }
 
-const incrementBusiness = function(id,cb){
+const incrementBusiness = function(id,amount,cb){
+    let increaseBy;
+    if(typeof(amount) === "function"){
+        increaseBy = 1;
+        cb = amount;
+    }else{
+        increaseBy = amount;
+    }
     //seraches for business and updates it;
     //if not business found by id, automatically creates new document for it with "counter" value of 1;
-    business.findOneAndUpdate({"id":id},{ $inc: { "counter" : 1 }},{new:true,upsert:true},(err,foundBusiness)=>{
-        if(err){
-            return cb({error:"Couldn't update database, please try again later..."});
-        }
-        return cb(null,{counter:foundBusiness.counter});
+    return new Promise((resolve,reject)=>{
+        business.findOneAndUpdate({"id":id},{ $inc: { "counter" : increaseBy }},{new:true,upsert:true},(err,foundBusiness)=>{
+            if(err){
+                if(cb){
+                    cb(err);
+                }
+                return reject(err);
+            }
+            if(cb){
+                cb(null,{counter:foundBusiness.counter});
+            }
+            return resolve({counter:foundBusiness.counter});
+        });
     });
+    
 }
 
 module.exports = {parseDataWithCounter, getBusinessCounter, incrementBusiness};

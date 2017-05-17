@@ -14,7 +14,6 @@ import FullCard, {Modal as FullCardModal} from "./FullCard.jsx";
 class Routes extends React.Component {
     render () {
         //check if user is accessing modal or full pag
-        console.log(window.user);
         const isModal = (this.props.location.state && this.props.location.state.modal && this.props.history.action !== "POP");
         return (
             <div>
@@ -29,10 +28,13 @@ class Routes extends React.Component {
     }
 }
 
-const App = () => (
-    <Router>
-        <Route component={Routes} />
-    </Router>
-) 
+const App = () => {
+    console.log(window.user);
+    return(
+        <Router>
+            <Route component={Routes} />
+        </Router>
+    );
+}
 
 export default App;
