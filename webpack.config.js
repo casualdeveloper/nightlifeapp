@@ -4,7 +4,7 @@ const webpack = require("webpack");
 
 const PATHS = {
     app:path.join(__dirname,"src/client.js"),
-    style:path.join(__dirname,"src/styles/style.css")
+    style:path.join(__dirname,"src/styles/style.scss")
 }
 
 const autoprefix = function() {

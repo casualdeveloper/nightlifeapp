@@ -1,0 +1,70 @@
+@import "./resources/imports";
+
+.notification-container{
+    position:absolute;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1400;
+    width:800px;
+}
+
+.notification-popup-wrapper{
+    margin:auto;
+    width: 800px;
+    @include shadow1();
+    cursor: pointer;
+    transition:transform .3s;
+}
+
+.notification-popup{
+    min-height: 50px;
+    padding: 12px;
+    background: white;
+    
+}
+.notification-enter{
+    transform:scale(0);
+    &.notification-enter-active{
+        transform:scale(1);
+        transition-timing-function: cubic-bezier(.32,1.84,.61,.68);
+    }
+}
+
+.notification-leave{
+    transform:scale(1);
+    &.notification-leave-active{
+        transform:scale(0);
+        transition-timing-function: cubic-bezier(.36,.41,.58,-0.91);
+    }
+}
+
+.notification-progress{
+    width:100%;
+    height:8px;
+    background:#e8e8e8;
+    box-shadow: inset 0px 1px 1px 0px rgba(0,0,0,0.1);
+}
+
+.notification-progress-bar{
+    width:0%;
+    height:100%;
+    background:#4286f4;
+    transition:width 5s linear;
+    &.success{
+        background:#3be256;
+    }
+    &.error{
+        background:#e23a3a;
+    }
+    &.warning{
+        background:#f4e046;
+    }
+}
+
+.notification-progress-appear{
+    width:100%;
+    &.notification-progress-appear-active{
+        width:0%;
+    }
+}

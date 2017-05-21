@@ -1,11 +1,14 @@
+@import "./resources/imports";
+@import "./notification";
+
 body {
-    background: #eee;
+    background: $BG;
     padding-top:15px;
 }
 
 .home-card{
     cursor:pointer;
-    color:#292b2c!important;
+    color:$FONT_COLOR!important;
 }
 
 .home-card:hover {
@@ -15,12 +18,14 @@ body {
 #businessSlides{
     min-height: 500px;
     background:black;
+
+    .carousel-inner{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 }
-#businessSlides > .carousel-inner{
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
+
 .carousel-control-button{
     background:transparent;
     border:0px;
@@ -67,7 +72,7 @@ body {
 }
 
 .title-link{
-    color:#292b2c !important;
+    color:$FONT_COLOR !important;
 }
 
 .card-comment{
