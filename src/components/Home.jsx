@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Loading from "./Loading.jsx";
 import ErrorMessage from "./ErrorMessage.jsx";
 import GoingButton from "./GoingButton.jsx";
+import {addNotification} from "./Notification.jsx";
 
 export default class Home extends React.Component{
     constructor(props){
@@ -25,15 +26,19 @@ export default class Home extends React.Component{
     }
 
     _handleSearch(){
-        let searchingFor = this.searchInput.value
+        let searchingFor = this.searchInput.value;
+        //check for spaces
+        let removedSpaces = searchingFor.replace(/\s/g, '');
+        if(removedSpaces === ""){
+            return addNotification({type:"error",message:"Search field must be filled"});
+        }
         //for loading screen
         this.setState({data:null,search:searchingFor});
         $.ajax({
             url: "/api/search",
             method: "POST",
             data:{str:searchingFor}
-        }).always((data)=>{ 
-            console.log(data);
+        }).done((data)=>{ 
             this.setState({data:data});
         });
     }
@@ -51,9 +56,9 @@ export default class Home extends React.Component{
             return (<Loading />);
         }
         //check for error
-        if(this.state.data.error){
-            return (<ErrorMessage message={this.state.data.error} />);
-        }
+        //if(this.state.data.error){
+        //    return (<ErrorMessage message={this.state.data.error} />);
+        //}
         //render content if everything else is OK.
         return (<Cards data={this.state.data} history={this.props.history} location={this.props.location}/>);
     }
