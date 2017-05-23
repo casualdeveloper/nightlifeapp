@@ -14,14 +14,20 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 	    <script src="/bundle.js"></script>
         <script>
-            if('<%- JSON.stringify(user) %>'){
-                var string = '<%- JSON.stringify(user) %>';
-                window.user = JSON.parse(string);
+            if(!!'<%- JSON.stringify(user) %>'){
+                var userString = '<%- JSON.stringify(user) %>';
+                window.user = JSON.parse(userString);
             }else{
                 window.user = null;
             }
             
-            
+            if(!!'<%- JSON.stringify(message) %>'){
+                var messageString = '<%- JSON.stringify(message) %>';
+                window.message = JSON.parse(messageString);
+            }else{
+                window.message = null;
+            }
+
         </script>
         <script src="/app.js"></script>
 

@@ -11,12 +11,14 @@ router.get("/auth/twitter/callback",
     passport.authenticate("twitter", { successRedirect: "/successLogin", failureRedirect: "/failure" }));
 
 
-//these routes are here to prevent react router grabbing them before passport is allowed to butt in ant process response from twitter
+//these routes are here to prevent react router grabbing them before passport is allowed to butt in and process response from twitter
 router.get("/failure",function(req,res,next){
+    req.messageSession.message = {type:"error",message:"Failed to authenticate, please try again later."};
     res.redirect("/");
 });
 
 router.get("/successLogin",function(req,res,next){
+    req.messageSession.message = {type:"success",message:"Authentication successfull."};
     res.redirect("/");
 });
 

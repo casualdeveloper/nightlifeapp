@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {addNotification} from "./Notification.jsx";
 
 const findBusinessInUser=(businessId=>{
     const user = window.user;
@@ -55,12 +56,9 @@ export default class GoingButton extends React.Component {
                 method:"POST",
                 url:"/api/business/increment",
                 data:{id:this.props.id}
-            }).always((data)=>{
-                if(!data.error){
-                    this.setState({going:data.counter,isUserGoing:true});
-                    pushBusinessToUser(this.props.id);
-                } 
-                console.log(data);
+            }).done((data)=>{
+                this.setState({going:data.counter,isUserGoing:true});
+                pushBusinessToUser(this.props.id);
             });
         }else{
             //if user is already going and clicked button once again
@@ -68,12 +66,9 @@ export default class GoingButton extends React.Component {
                 method:"POST",
                 url:"/api/business/decrement",
                 data:{id:this.props.id}
-            }).always((data)=>{
-                if(!data.error){
-                    this.setState({going:data.counter,isUserGoing:false});
-                    removeBusinessFromUser(this.props.id);
-                } 
-                console.log(data);
+            }).done((data)=>{
+                this.setState({going:data.counter,isUserGoing:false});
+                removeBusinessFromUser(this.props.id);
             });
         }
         

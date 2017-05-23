@@ -3,7 +3,7 @@ import {BrowserRouter as Router,Route,Link, Switch} from "react-router-dom";
 
 import Home from "./Home.jsx";
 import FullCard, {Modal as FullCardModal} from "./FullCard.jsx";
-import Notification from "./Notification.jsx";
+import Notification,{addNotification} from "./Notification.jsx";
 
 //The idea of app is:
 //If user clicks on one of the cards in Home page
@@ -13,8 +13,10 @@ import Notification from "./Notification.jsx";
 //  2.show modal function;
 //otherwise user is redirected by route to /:id location id being business id that will be used to retrieve data about it through props.match.params.id
 
-
 class Routes extends React.Component {
+    componentDidMount(){
+        initialMessage();
+    }
     render () {
         //check if user is accessing modal or full page
         const isModal = (this.props.location.state && this.props.location.state.modal && this.props.history.action !== "POP");
@@ -30,16 +32,22 @@ class Routes extends React.Component {
         );
     }
 }
-
 const App = () => {
     return(
         <Router>
             <div>
-                <Notification limit={2}/>
+                <Notification limit={3} globalAjaxErrorHandling={true}/>
                 <Route component={Routes} />
             </div>
         </Router>
     );
+}
+
+const initialMessage = () => {
+    if(window.message){
+        addNotification(window.message);
+        window.message = null;
+    }
 }
 
 export default App;

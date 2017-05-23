@@ -5,18 +5,27 @@ const hashKey = () =>{
     return "_"+(Math.random().toString(36).substring(0,9));
 }
 
-export let addMessage = (cb,obj) =>{
+let initializeGlobalAjaxErrorHandling = () =>{
+    $( document ).ajaxError((e,request,settings,errorText)=>{
+        addNotification({type:"error",message:request.responseText});
+    });
+}
+
+export let addNotification = (cb,obj) =>{
     cb(obj);
 }
 
 export default class Notification extends React.Component {
     constructor(props){
         super(props);
-        this.state={};
+        this.state={messages:[]};
         this.addItem = this.addItem.bind(this);
         this.removeItem = this.removeItem.bind(this);
-        addMessage = addMessage.bind(null,this.addItem);
+        addNotification = addNotification.bind(null,this.addItem);
         this.limit = this.props.limit;
+        if(props.globalAjaxErrorHandling){
+            initializeGlobalAjaxErrorHandling();
+        }
     }
 
     removeItem(id) {

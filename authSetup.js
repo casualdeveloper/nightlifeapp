@@ -27,7 +27,6 @@ module.exports = function(app){
             callbackURL: config.TWITTER_CALLBACK_URL
         },
         function(token, tokenSecret, profile, done) {
-            console.log("auth");
             user.findOne({uid:profile.id},
                 function(err, foundUser) {
                     if (err)
@@ -39,8 +38,7 @@ module.exports = function(app){
                             uid: profile.id
                         });
                         foundUser.save(function(err) {
-                            if (err)
-                                console.log(err);
+                            if (err) return done(err);
                             return done(null, foundUser);
                         });
                     } else {

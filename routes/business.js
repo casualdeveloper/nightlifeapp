@@ -12,12 +12,12 @@ router.post("/api/business/increment",function(req,res){
             //if business does NOT exists in database new document of it will be automatically created
             businessQueries.incrementBusiness(id,(err,json)=>{
                 if(err){
-                    return res.status(200).json({error:"Failed to increment"});
+                    return res.status(401).send("Action failed, please try again later...");
                 }
                 return res.status(200).json(json);
             });
         }).catch(err=>{
-            return res.status(200).json({error:"Failed to increment2"});
+            return res.status(401).send("Action failed, please try again later...");
         });
         
 });
@@ -31,12 +31,12 @@ router.post("/api/business/decrement",function(req,res){
             //if business does NOT exists in database new document of it will be automatically created
             businessQueries.incrementBusiness(id,-1,(err,json)=>{
                 if(err){
-                    return res.status(200).json({error:"Failed to increment"});
+                    return res.status(401).send("Action failed, please try again later...");
                 }
                 return res.status(200).json(json);
             });
         }).catch(err=>{
-            return res.status(200).json({error:"Failed to increment"});
+            return res.status(401).send("Action failed, please try again later...");
         });
         
 });

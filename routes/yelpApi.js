@@ -71,11 +71,10 @@ router.post("/api/search",function(req,res){
                     return res.status(200).json(resJSON);
                 });
             }else{
-                return res.status(200).json(resJSON);
+                return res.status(401).send(resJSON.error);
             }
         }).catch(err=>{
-            console.log(err);
-            res.status(200).json({error:"Failed to retrieve data from yelp Api, please try again later."});
+            res.status(401).send("Failed to retrieve data from yelp Api, please try again later.");
         });
 });
 
@@ -83,6 +82,9 @@ router.post("/api/search",function(req,res){
 router.get("/api/business/:id",function(req,res){
     let id = querystring.escape(req.params.id);//precent-encode business id
     //asyn requests to (originally) 2 links 
+
+    //first link is for info about business
+    //second link is for reviews of business
 
     //noError - true, wont return any errors in case of one will return default value of 0
     //this way even if we can NOT retrieve data from our database we will still render business.
@@ -102,14 +104,14 @@ router.get("/api/business/:id",function(req,res){
             if(!json1.error && !json2.error){
                 json1.reviews = json2.reviews;
             }else{
-                json1 = {error:"Failed to retrieve valid data from yelp API, please check if link is correct or try again later."};
+                return res.status(401).send("Failed to retrieve valid data from yelp API, please check if link is correct or try again later.");
             }
             //set counter
             json1.counter = data[2];
             
             res.status(200).json(json1);
         }).catch(err=>{
-            res.status(200).json({error:"Failed to retrieve data from yelp Api, please try again later."});
+            res.status(401).send("Failed to retrieve data from yelp Api, please try again later.");
         });
 });
 

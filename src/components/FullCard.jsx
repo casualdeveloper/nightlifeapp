@@ -26,7 +26,7 @@ const fetchData = (id) =>{
             $.ajax({
                 url: "/api/business/counter/"+id,
                 method: "GET"
-            }).always((counterObj)=>{ 
+            }).done((counterObj)=>{ 
                 data.counter = counterObj.counter;
                 resolve(data);
             });
@@ -36,10 +36,8 @@ const fetchData = (id) =>{
         $.ajax({
             url: "/api/business/"+id,
             method: "GET"
-        }).always((data)=>{ 
-            if(!data.error){
-                cache.push(data);
-            }
+        }).done((data)=>{ 
+            cache.push(data);
             resolve(data);
         });
     });
@@ -70,9 +68,9 @@ export default class FullCard extends React.Component{
             return (<Loading />);
         }
         //check for error
-        if(this.state.data.error){
-            return (<ErrorMessage message={this.state.data.error} />);
-        }
+        //if(this.state.data.error){
+        //    return (<ErrorMessage message={this.state.data.error} />);
+        //}
         //render content if everything else is OK.
         return (<Card data={this.state.data} />);
     }
@@ -127,9 +125,9 @@ export class Modal extends React.Component{
             return (<Loading />);
         }
         //check for error
-        if(this.state.data.error){
-            return (<ErrorMessage message={this.state.data.error} />);
-        }
+        //if(this.state.data.error){
+        //    return (<ErrorMessage message={this.state.data.error} />);
+        //}
         //render content if everything else is OK.
         return (<Card data={this.state.data} modal={true}/>);
     }
