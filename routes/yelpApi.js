@@ -2,6 +2,7 @@ const router = require("express").Router();
 const request = require("request-promise-native");
 const querystring = require("querystring");
 const businessQueries = require("../businessQueries.js");
+const userQueries = require("../userQueries.js");
 
 const searchOptions = function(str) {  
     return {   
@@ -53,6 +54,11 @@ const parseJSON = function(str){
 
 router.post("/api/search",function(req,res){
     let str = querystring.escape(req.body.str);//precent-encode search string
+
+    if(req.isAuthenticated()){
+        userQueries.setLastSearched(req.user._id,str);
+    }
+
     request(searchOptions(str))
         .then(json=>{
             let resJSON = parseJSON(json);

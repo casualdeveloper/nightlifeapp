@@ -23,13 +23,22 @@ export default class Home extends React.Component{
     componentDidMount(){
         //ref to input
         this.searchInput = $("#home-search")[0];
+
+
+        //check if user is logged in
+        //if so automatically search        
+        if(window.user){
+            if(window.user.lastSearched !== ""){
+                this.searchInput.value = window.user.lastSearched;
+                this._handleSearch();
+            }
+        }
     }
 
     _handleSearch(){
         let searchingFor = this.searchInput.value;
         //check for spaces
-        let removedSpaces = searchingFor.replace(/\s/g, '');
-        if(removedSpaces === ""){
+        if(searchingFor.trim() === ""){
             return addNotification({type:"error",message:"Search field must be filled"});
         }
         //for loading screen
@@ -60,7 +69,7 @@ export default class Home extends React.Component{
         //    return (<ErrorMessage message={this.state.data.error} />);
         //}
         //render content if everything else is OK.
-        return (<Cards data={this.state.data} history={this.props.history} location={this.props.location}/>);
+        return (<Cards search={this.searchInput.value} data={this.state.data} history={this.props.history} location={this.props.location}/>);
     }
 
     render(){
@@ -87,12 +96,11 @@ export default class Home extends React.Component{
 }
 
 const Cards = (props) =>{
-
     let going = (!props.data.counter)?"0":props.data.counter;
 
     const businesses = props.data.businesses;
     const list = businesses.map((data, i)=>{
-        return <Card data={data} key={i} history={props.history} location={props.location} />
+        return <Card  {...props} data={data} key={i} />
     });
     return (<div className="card-columns">{list}</div>);
 }
@@ -102,6 +110,7 @@ class Card extends React.Component {
         super(props);
         this.state = {};
         this._click = this._click.bind(this);
+        console.log(props);
     }
     _click(e){
         let target = $(e.target);
@@ -118,7 +127,7 @@ class Card extends React.Component {
                 <img className="card-img-top img-fluid" src={this.props.data.image_url} alt="Card image cap" />
                 <div className="card-block">
                     <Link className="title-link" to={this.props.data.id}><h4 className="card-title" data-nomodal="true">{this.props.data.name}</h4></Link>
-                    <GoingButton counter={this.props.data.counter} id={this.props.data.id} history={this.props.history} />
+                    <GoingButton search={this.props.search} counter={this.props.data.counter} id={this.props.data.id} history={this.props.history} />
                 </div>
             </div>
         );

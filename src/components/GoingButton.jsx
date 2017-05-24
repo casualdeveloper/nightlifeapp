@@ -48,7 +48,7 @@ export default class GoingButton extends React.Component {
         const user = window.user;
         if(!user){
             //redirect for auth
-            return window.location.href = "/auth/twitter";
+            return window.location.href = "/auth/"+this.props.search;
         }
         if(!this.state.isUserGoing){
             // if user is not going 

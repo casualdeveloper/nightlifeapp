@@ -27,24 +27,27 @@ module.exports = function(app){
             callbackURL: config.TWITTER_CALLBACK_URL
         },
         function(token, tokenSecret, profile, done) {
-            user.findOne({uid:profile.id},
-                function(err, foundUser) {
-                    if (err)
-                        return done(err);
+            process.nextTick(function(){
+                user.findOne({uid:profile.id},
+                    function(err, foundUser) {
+                        if (err)
+                            return done(err);
 
-                    if (!foundUser) {
-                        foundUser = new user({
-                            profileName: profile.displayName,
-                            uid: profile.id
-                        });
-                        foundUser.save(function(err) {
-                            if (err) return done(err);
+                        if (!foundUser) {
+                            foundUser = new user({
+                                profileName: profile.displayName,
+                                uid: profile.id,
+                                token: token
+                            });
+                            foundUser.save(function(err) {
+                                if (err) return done(err);
+                                return done(null, foundUser);
+                            });
+                        } else {
                             return done(null, foundUser);
-                        });
-                    } else {
-                        return done(null, foundUser);
-                    }
-                });
+                        }
+                    });
+            });
         }
     ));
 

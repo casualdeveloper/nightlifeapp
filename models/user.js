@@ -3,7 +3,12 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
     profileName: String,
     uid: String,
-    goingTo: []
+    token: String,
+    goingTo: [],
+    lastSearched: {
+        type: String,
+        default: ""
+    }
 });
 
 

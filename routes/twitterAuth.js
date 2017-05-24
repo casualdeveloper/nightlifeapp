@@ -1,7 +1,12 @@
 const router = require("express").Router();
 const passport = require("passport");
+const userQueries = require("../userQueries.js");
 
-router.get("/auth/twitter", passport.authenticate("twitter"));
+router.get("/auth/:search",function(req,res,next){
+    //put search into session
+    req.session.searched = req.params.search;
+    next();
+},passport.authenticate("twitter"));
 
 // Twitter will redirect the user to this URL after approval.  Finish the
 // authentication process by attempting to obtain an access token.  If
@@ -18,6 +23,13 @@ router.get("/failure",function(req,res,next){
 });
 
 router.get("/successLogin",function(req,res,next){
+
+    //retrieve last searched place from session and update user
+    //delete that part of session
+    if(req.session.searched.trim() !== ""){
+        userQueries.setLastSearched(req.user._id,req.session.searched);
+        delete req.session.searched;
+    };
     req.messageSession.message = {type:"success",message:"Authentication successfull."};
     res.redirect("/");
 });
