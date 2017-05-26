@@ -71,4 +71,24 @@ body {
     &:focus{
         @include shadow1();
     }
+    cursor:pointer;
+}
+
+.shadow1{
+    @include shadow1();
+}
+
+.yelp-button{
+    color:$FONT_COLOR;
+    height:100%;
+    padding:15px;
+    &:hover{
+        background:#D32323;
+        color:white !important;
+        @include shadow1();
+    }
+    &:focus{
+        box-shadow: none;
+        color:$FONT_COLOR;
+    }
 }

@@ -48,7 +48,8 @@ export default class GoingButton extends React.Component {
         const user = window.user;
         if(!user){
             //redirect for auth
-            return window.location.href = "/auth/"+this.props.search;
+            let lastSearched = (this.props.search)?this.props.search:null;
+            return window.location.href = "/auth/"+lastSearched;
         }
         if(!this.state.isUserGoing){
             // if user is not going 
@@ -85,12 +86,15 @@ export default class GoingButton extends React.Component {
     render(){
         const imGoingButtonText = this._isUserGoing();
         return(
-            <div>
-                <button className="btn custom-button mb-2" data-nomodal="true" onClick={this._imGoing}>
-                    {(this.state.isUserGoing)?<i className="fa fa-check" data-nomodal="true" aria-hidden="true"></i>:null}
-                    {imGoingButtonText}
-                </button>
-                <p className="card-text"><small className="text-muted">{this.state.going} Going</small></p>
+            <div className="d-flex justify-content-start">
+                <div>
+                    <button className="btn custom-button mb-2" data-nomodal="true" onClick={this._imGoing}>
+                        {(this.state.isUserGoing)?<i className="fa fa-check" data-nomodal="true" aria-hidden="true"></i>:null}
+                        {imGoingButtonText}
+                    </button>
+                    <p className="card-text"><small className="text-muted">{this.state.going} Going</small></p>
+                </div>
+                <Link to={this.props.url} target="_blank" data-nomodal="true" className="ml-auto btn yelp-button"><i className="fa fa-yelp fa-2x " data-nomodal="true" aria-hidden="true"></i></Link>
             </div>
         );
     }

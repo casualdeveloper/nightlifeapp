@@ -26,7 +26,9 @@ router.get("/successLogin",function(req,res,next){
 
     //retrieve last searched place from session and update user
     //delete that part of session
-    if(req.session.searched.trim() !== ""){
+    let searched = req.session.searched;
+    let searchedTrimmed = searched.trim();
+    if(searchedTrimmed !== "" && searchedTrimmed !== "null"){
         userQueries.setLastSearched(req.user._id,req.session.searched);
         delete req.session.searched;
     };

@@ -137,12 +137,12 @@ export class Modal extends React.Component{
             <div className="modal fade" id="businessModal" tabIndex="-1" role="dialog" aria-labelledby="business" aria-hidden="true">
                 <div className="modal-dialog-custom modal-dialog " role="document">
                     <div className="modal-content custom-modal">
-                    <div className="modal-body">
-                        {content}
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
+                        <div className="modal-body">
+                            {content}
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn custom-button" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -152,14 +152,14 @@ export class Modal extends React.Component{
 
 const Card = (props)=>{
     return(
-        <div className="container">
+        <div className="container mb-5">
             <div className="card full-card">
                 {(props.modal)?(<Link className="title-link" to={props.data.id} target="_blank"><h1 className="text-center mb-3">{props.data.name}</h1></Link>):null}
                 <Carousel img1={props.data.photos[0]} img2={props.data.photos[1]} img3={props.data.photos[2]} />
                 <div className="card-block">
                     {(!props.modal)?(<h1 className="text-center mb-3">{props.data.name}</h1>):null}
                     <Reviews modal={props.modal} reviews={props.data.reviews} />
-                    <GoingButton counter={props.data.counter} id={props.data.id} />
+                    <GoingButton counter={props.data.counter} id={props.data.id} url={props.data.url}/>
                 </div>
             </div>
         </div>

@@ -130,8 +130,24 @@ body {
 
 .custom-button {
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
-  border-radius: 0px; }
+  border-radius: 0px;
+  cursor: pointer; }
   .custom-button:focus {
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3); }
+
+.shadow1 {
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3); }
+
+.yelp-button {
+  color: #292b2c;
+  height: 100%;
+  padding: 15px; }
+  .yelp-button:hover {
+    background: #D32323;
+    color: white !important;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3); }
+  .yelp-button:focus {
+    box-shadow: none;
+    color: #292b2c; }
 
 /*# sourceMappingURL=style.css.map*/

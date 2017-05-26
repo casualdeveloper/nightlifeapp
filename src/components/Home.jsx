@@ -77,8 +77,8 @@ export default class Home extends React.Component{
 
         return(
             <div className="container">
-                <h1 className="text-center mb-3" >HOME :))</h1>
-                {/* serach */}
+                <h1 className="text-center mb-4" >Nightlife coordination app</h1>
+                {/* search */}
                 <div className="w-50 mx-auto">
                     <div className="input-group">
                     <input id="home-search" type="text" className="form-control" placeholder="Search for..."/>
@@ -125,8 +125,8 @@ class Card extends React.Component {
             <div className="card home-card" onClick={this._click}>
                 <img className="card-img-top img-fluid" src={this.props.data.image_url} alt="Card image cap" />
                 <div className="card-block">
-                    <Link className="title-link" to={this.props.data.id}><h4 className="card-title" data-nomodal="true">{this.props.data.name}</h4></Link>
-                    <GoingButton search={this.props.search} counter={this.props.data.counter} id={this.props.data.id} history={this.props.history} />
+                    <Link className="title-link" to={this.props.data.id} target="_blank"><h4 className="card-title" data-nomodal="true">{this.props.data.name}</h4></Link>
+                    <GoingButton search={this.props.search} counter={this.props.data.counter} id={this.props.data.id} history={this.props.history} url={this.props.data.url}/>
                 </div>
             </div>
         );
