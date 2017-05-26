@@ -35,7 +35,10 @@ export default class Home extends React.Component{
         }
     }
 
-    _handleSearch(){
+    _handleSearch(e){
+        if(e){
+            e.preventDefault();
+        }
         let searchingFor = this.searchInput.value;
         //check for spaces
         if(searchingFor.trim() === ""){
@@ -53,11 +56,8 @@ export default class Home extends React.Component{
     }
 
     whatShouldRender(){
-        if(!this.state){
-            return null;
-        }
         //check if searched anything (to prevent loading animation if no search has been done)
-        if(this.state.search === null){
+        if(!this.state || this.state.search === null){
             return null;
         }
         //check if loading
@@ -80,12 +80,14 @@ export default class Home extends React.Component{
                 <h1 className="text-center mb-4" >Nightlife coordination app</h1>
                 {/* search */}
                 <div className="w-50 mx-auto">
+                    <form>
                     <div className="input-group">
                     <input id="home-search" type="text" className="form-control" placeholder="Search for..."/>
                         <span className="input-group-btn">
-                            <button className="btn btn-secondary" type="button" onClick={this._handleSearch}>Go!</button>
+                            <button className="btn btn-secondary" type="submit" onClick={this._handleSearch}>Go!</button>
                         </span>
                     </div>
+                    </form>
                 </div>
                 {/* content */}
                 <hr/>
