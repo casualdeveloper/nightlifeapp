@@ -35,8 +35,28 @@ const removeBusiness = function(id,businessId,cb){
             }
             return resolve(res);
             
+            
         });
     });
+    
+}
+
+const checkForBusinessInUser = function(id,businessId,cb){
+    return new Promise((resolve,reject)=>{
+        user.findById(id,function(err,res){
+        if(err){
+            if(cb){
+                cb(err);
+            }
+            return reject(err);
+        }
+        let results = (res.goingTo.indexOf(businessId)>-1)
+        if(cb){
+            cb(null,results);
+        }
+        return resolve(results);
+        });
+    })
     
 }
 
@@ -57,4 +77,4 @@ const setLastSearched = function(id,str,cb){
     });
 }
 
-module.exports = {addBusiness,removeBusiness,setLastSearched};
+module.exports = {addBusiness,removeBusiness,setLastSearched,checkForBusinessInUser};
