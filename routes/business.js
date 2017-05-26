@@ -5,10 +5,17 @@ const userQueries = require("../userQueries.js");
 const authMiddleware = require("../middleware/auth.js");
 
 router.post("/api/business/increment",authMiddleware.ifNoUserPermissionDenied,function(req,res){
-    
+
      let id = querystring.escape(req.body.id);//precent-encode business id
      
-     userQueries.addBusiness(req.user._id,id)
+     userQueries.checkForBusinessInUser(req.user._id,id,function(err,exists){
+        //if error occured while searching for business id 
+        //or returned variable is true (in case business was already in users goingTo array)
+        //simply return error
+        if(err || exists){
+            return res.status(401).send("Action failed, please try again later...");
+        }
+        userQueries.addBusiness(req.user._id,id)
         .then(data=>{
             //will increase counter variable by 1
             //if business does NOT exists in database new document of it will be automatically created
@@ -21,7 +28,7 @@ router.post("/api/business/increment",authMiddleware.ifNoUserPermissionDenied,fu
         }).catch(err=>{
             return res.status(401).send("Action failed, please try again later...");
         });
-        
+    });    
 });
 
 router.post("/api/business/decrement",authMiddleware.ifNoUserPermissionDenied,function(req,res){
