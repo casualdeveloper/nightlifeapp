@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const business = require("./models/business.js");
+const querystring = require("querystring");
 
 const parseDataWithCounter = function(arr, cb){
     return new Promise((resolve,reject) => {
@@ -29,6 +30,8 @@ const parseDataWithCounter = function(arr, cb){
 }
 
 const getBusinessCounter = function(id,noError,cb){
+    id = querystring.escape(id);
+
     //making noError optional
     if(typeof(noError)==="function"){
         cb=noError;
