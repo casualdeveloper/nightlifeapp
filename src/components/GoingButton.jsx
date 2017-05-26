@@ -40,7 +40,7 @@ export default class GoingButton extends React.Component {
         this.state = {};
         //going - value for amount of people that are going
         //if no counter is found in business obj we simply set going to default value (0)
-        this.state.going = (props.counter)?props.counter:"0";
+        this.state.going = (props.counter && props.counter>=0)?props.counter:"0";
         this._imGoing = this._imGoing.bind(this);
         this.state.isUserGoing = findBusinessInUser(props.id);
     }
@@ -75,7 +75,7 @@ export default class GoingButton extends React.Component {
     }
     _isUserGoing(){
         const user = window.user;
-        const going = "Already going";
+        const going = " Already going";
         const notGoing = "I'm going";
         if(this.state.isUserGoing){
             return going;
@@ -86,7 +86,10 @@ export default class GoingButton extends React.Component {
         const imGoingButtonText = this._isUserGoing();
         return(
             <div>
-                <button className="btn btn-primary mb-2" data-nomodal="true" onClick={this._imGoing}>{imGoingButtonText}</button>
+                <button className="btn custom-button mb-2" data-nomodal="true" onClick={this._imGoing}>
+                    {(this.state.isUserGoing)?<i className="fa fa-check" data-nomodal="true" aria-hidden="true"></i>:null}
+                    {imGoingButtonText}
+                </button>
                 <p className="card-text"><small className="text-muted">{this.state.going} Going</small></p>
             </div>
         );

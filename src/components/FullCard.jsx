@@ -136,7 +136,7 @@ export class Modal extends React.Component{
         return(
             <div className="modal fade" id="businessModal" tabIndex="-1" role="dialog" aria-labelledby="business" aria-hidden="true">
                 <div className="modal-dialog-custom modal-dialog " role="document">
-                    <div className="modal-content">
+                    <div className="modal-content custom-modal">
                     <div className="modal-body">
                         {content}
                     </div>

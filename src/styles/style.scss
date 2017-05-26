@@ -1,5 +1,6 @@
 @import "./resources/imports";
-@import "./notification";
+@import "./notification.scss";
+@import "./custom-modal.scss";
 
 body {
     background: $BG;
@@ -36,18 +37,6 @@ body {
     margin:auto;
 }
 
-.modal-dialog-custom{
-        max-width:100%;
-        margin:30px auto;
-} 
-
-@media (min-width: 768px){
-    .modal-dialog-custom{
-        max-width:80% ;
-        margin:30px auto;
-    } 
-}
-
 @media (min-width: 576px) and (max-width: 767px){
     .card-columns{
         -webkit-column-count: 2;
@@ -58,13 +47,6 @@ body {
         column-gap: 1.25rem;
 
     } 
-}
-
-@media (min-width: 576px){
-    .modal-dialog-custom > .modal-content > .modal-body > .container {
-        width: initial;
-        max-width: 100%;
-    }
 }
 
 .full-card{
@@ -81,4 +63,12 @@ body {
 
 .reviews{
     background: rgba(40,40,40,0.04);
+}
+
+.custom-button{
+    @include shadow1();
+    border-radius:0px;
+    &:focus{
+        @include shadow1();
+    }
 }

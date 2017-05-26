@@ -60,6 +60,25 @@
   .notification-progress-appear.notification-progress-appear-active {
     width: 0%; }
 
+@media (min-width: 576px) {
+  .modal-dialog-custom > .modal-content > .modal-body > .container {
+    width: initial;
+    max-width: 100%; } }
+
+.modal-dialog-custom {
+  max-width: 100%;
+  margin: 30px auto; }
+
+@media (min-width: 768px) {
+  .modal-dialog-custom {
+    max-width: 80%;
+    margin: 30px auto; } }
+
+.custom-modal {
+  border-radius: 0px;
+  border: none;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3); }
+
 body {
   background: #eee;
   padding-top: 15px; }
@@ -88,15 +107,6 @@ body {
   max-height: 500px;
   margin: auto; }
 
-.modal-dialog-custom {
-  max-width: 100%;
-  margin: 30px auto; }
-
-@media (min-width: 768px) {
-  .modal-dialog-custom {
-    max-width: 80%;
-    margin: 30px auto; } }
-
 @media (min-width: 576px) and (max-width: 767px) {
   .card-columns {
     -webkit-column-count: 2;
@@ -105,11 +115,6 @@ body {
     -webkit-column-gap: 1.25rem;
     -moz-column-gap: 1.25rem;
     column-gap: 1.25rem; } }
-
-@media (min-width: 576px) {
-  .modal-dialog-custom > .modal-content > .modal-body > .container {
-    width: initial;
-    max-width: 100%; } }
 
 .full-card {
   border: 0px; }
@@ -122,5 +127,11 @@ body {
 
 .reviews {
   background: rgba(40, 40, 40, 0.04); }
+
+.custom-button {
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 0px; }
+  .custom-button:focus {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3); }
 
 /*# sourceMappingURL=style.css.map*/

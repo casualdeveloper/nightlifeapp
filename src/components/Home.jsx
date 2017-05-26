@@ -110,7 +110,6 @@ class Card extends React.Component {
         super(props);
         this.state = {};
         this._click = this._click.bind(this);
-        console.log(props);
     }
     _click(e){
         let target = $(e.target);
