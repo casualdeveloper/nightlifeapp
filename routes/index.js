@@ -4,9 +4,11 @@ router.use(require("./yelpApi.js"));
 router.use(require("./business.js"));
 router.use(require("./twitterAuth.js"));
 
+
 router.get("/favicon.ico",function(req,res){
     res.status(204).end();
 });
+
 
 router.get("*", function (req, res) {
 

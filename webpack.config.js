@@ -1,10 +1,15 @@
-const path = require("path");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const webpack = require("webpack");
+const path               = require("path");
+const ExtractTextPlugin  = require("extract-text-webpack-plugin");
+const webpack            = require("webpack");
+const ManifestPlugin     = require("webpack-manifest-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+const CompressionPlugin  = require("compression-webpack-plugin");
+
 
 const PATHS = {
     app:path.join(__dirname,"src/client.js"),
-    style:path.join(__dirname,"src/styles/style.scss")
+    style:path.join(__dirname,"src/styles/style.scss"),
+    build:path.join(__dirname, "/public") 
 }
 
 const autoprefix = function() {
@@ -25,8 +30,8 @@ module.exports = {
     },
     devtool:"cheap-source-map",
     output: {
-        filename: "[name].js",
-        path: path.join(__dirname, "/public")
+        filename: (process.env.NODE_ENV === "production") ? "[name].[chunkhash].js" : "[name].js",
+        path: PATHS.build
     },
     module: {
         rules: [
@@ -54,9 +59,16 @@ module.exports = {
             }
         }]
     },
+    resolve:{
+        alias: {
+            "react": "preact-compat",
+            "react-dom": "preact-compat"
+        }
+    },
     plugins:[
+        new CleanWebpackPlugin([PATHS.build]),
         new ExtractTextPlugin({
-            filename: (process.env.NODE_ENV === "production") ? "css/[name].[contenthash].css" : "[name].css",
+            filename: (process.env.NODE_ENV === "production") ? "[name].[contenthash].css" : "[name].css",
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: "bundle",
@@ -66,6 +78,15 @@ module.exports = {
                 resource.indexOf("node_modules") >= 0 &&
                 resource.match(/\.js$/)
             ),
-        })
+        }),
+        new webpack.optimize.UglifyJsPlugin(), 
+        new CompressionPlugin({
+			asset: "[path].gz[query]",
+			algorithm: "gzip",
+			test: /\.(js)$/,
+			threshold: 10240,
+			minRatio: 0.8
+		}),
+        new ManifestPlugin()
     ]
 };

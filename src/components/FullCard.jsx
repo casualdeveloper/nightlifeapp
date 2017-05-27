@@ -74,7 +74,6 @@ const fetchData = (id) =>{
         //search for data in cache
         //if found retrieve and update counter variable - (amount of people that are going to event...)
         if(data = getFromCache(id)){
-            console.log("geeeeting");
             $.ajax({
                 url: "/api/business/counter/"+id,
                 method: "GET"
