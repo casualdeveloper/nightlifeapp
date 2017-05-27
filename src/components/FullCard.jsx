@@ -4,25 +4,77 @@ import ErrorMessage from "./ErrorMessage.jsx";
 import {Link} from "react-router-dom";
 import GoingButton from "./GoingButton.jsx";
 
-const cache = [];
 
+const getCurrentTimeInSeconds = () =>{
+    if (!Date.now) {
+        Date.now = function() { return new Date().getTime(); }
+    }
+    return Math.floor(Date.now() / 1000);
+}
+
+const _24HoursInSeconds = 24 * 60 * 60;
+
+const isExpired = (timestamp, expirationTime) => {
+    const currTime = getCurrentTimeInSeconds();
+    if(currTime - timestamp>expirationTime){
+        return true;//expired;
+    }
+    return false;
+}
+
+const checkIfLocalStorageAvailable = () =>{
+    try {
+        localStorage.setItem("test", "test");
+        localStorage.removeItem("test");
+        return true;
+    } catch(e) {
+        return false;
+    }
+}
+
+const localStorageIsAvailable = checkIfLocalStorageAvailable();
+
+const validateAndParseData = (obj) => {
+    try{
+        let data = JSON.parse(obj);
+        return data;
+    }catch(e){
+        return false;
+    }
+}
 
 //id as business id.
-const searchInCache = (id) =>{
-    for(let i = 0 ; i < cache.length; i++){
-        if(cache[i].id === id){
-            return cache[i];
+const getFromCache = (id) =>{
+    if(!localStorageIsAvailable){
+        return null;
+    }
+    let data = localStorage.getItem(id);
+    if(data = validateAndParseData(data)){
+        // if timestamp exists and data hasn't expired (24hrs for expiration due to yelp api requirements) return data
+        if(data.timestamp && !isExpired(data.timestamp,_24HoursInSeconds)){
+            return data;
         }
+        return null;
     }
     return null;
 }
+const addToCache = (id,data) =>{
+    
+    //get and add current date in seconds
+    data.timestamp = getCurrentTimeInSeconds();
+
+    localStorage.setItem(id,JSON.stringify(data));
+}
+
+
 
 const fetchData = (id) =>{
     return new Promise((resolve,reject)=>{
         let data;
         //search for data in cache
         //if found retrieve and update counter variable - (amount of people that are going to event...)
-        if(data = searchInCache(id)){
+        if(data = getFromCache(id)){
+            console.log("geeeeting");
             $.ajax({
                 url: "/api/business/counter/"+id,
                 method: "GET"
@@ -30,16 +82,18 @@ const fetchData = (id) =>{
                 data.counter = counterObj.counter;
                 resolve(data);
             });
+        }else{
+            //if no data was found in cache retrieve it from server 
+            $.ajax({
+                url: "/api/business/"+id,
+                method: "GET"
+            }).done((data)=>{ 
+                addToCache(id,data);
+                resolve(data);
+            });
         }
 
-        //if no data was found in cache retrieve it from server 
-        $.ajax({
-            url: "/api/business/"+id,
-            method: "GET"
-        }).done((data)=>{ 
-            cache.push(data);
-            resolve(data);
-        });
+        
     });
     
 }
