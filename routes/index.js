@@ -5,7 +5,7 @@ router.use(require("./business.js"));
 router.use(require("./twitterAuth.js"));
 
 router.get("/favicon.ico",function(req,res){
-    res.status(401);
+    res.status(204).end();
 });
 
 router.get("*", function (req, res) {
