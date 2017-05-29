@@ -1,17 +1,27 @@
 # nightlifeapp
 
-to build
+### Build
 ```sh
 $ npm run build_prod
 ```
-to start
+for development
+```sh
+$ npm run build_dev
+```
+
+### Start
+(requires forever to be installed)
 ```sh
 $ npm run start_prod
 ```
+for development
+```sh
+$ npm run start_dev
+```
 
-Don't forget to create a file name config.json in root directory
+Don't forget to create a file named config.json in root directory
 
-config.json
+config.json structure
 ``` json
 {
     "access_token":"YELP_ACCESS_TOKEN",
