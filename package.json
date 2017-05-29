@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start_prod": "export NODE_ENV=production|| set NODE_ENV=production&&forever app.js",
+    "start_prod": "export NODE_ENV=production|| set NODE_ENV=production&&forever server.js",
     "start_dev": "nodemon server.js --ext js,jsx",
     "build_dev": "webpack --watch",
     "build_prod": "export NODE_ENV=production|| set NODE_ENV=production&&webpack"
