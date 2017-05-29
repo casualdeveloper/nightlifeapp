@@ -7,7 +7,8 @@ const hashKey = () =>{
 
 let initializeGlobalAjaxErrorHandling = () =>{
     $( document ).ajaxError((e,request,settings,errorText)=>{
-        addNotification({type:"error",message:request.responseText});
+        message = request.responseText || request.statusText;
+        addNotification({type:"error",message:message});
     });
 }
 
