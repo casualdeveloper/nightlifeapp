@@ -78,6 +78,8 @@ const fetchData = (id) =>{
                 url: "/api/business/counter/"+id,
                 method: "GET"
             }).done((counterObj)=>{ 
+                console.log(counterObj);
+                console.log(id);
                 data.counter = counterObj.counter;
                 resolve(data);
             });

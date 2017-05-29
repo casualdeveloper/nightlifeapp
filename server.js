@@ -8,7 +8,7 @@ const sessions = require("client-sessions");
 const expressStaticGzip = require("express-static-gzip");
 const manifest = require("./public/manifest.json");
 
-mongoose.connect("mongodb://localhost:27017/nightlifeapp");
+mongoose.connect(config.MONGO_DB);
 
 app.use("/", expressStaticGzip("./public/"));
 

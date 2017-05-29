@@ -64,7 +64,7 @@ router.post("/api/business/decrement",authMiddleware.ifNoUserPermissionDenied,fu
 
 router.get("/api/business/counter/:id",function(req,res){
     let id = querystring.escape(req.params.id);//precent-encode business id
-    
+    console.log(id);
     businessQueries.getBusinessCounter(id,true)
         .then(data=>{
             return res.status(200).json({counter:data});

@@ -6,7 +6,7 @@ const parseDataWithCounter = function(arr, cb){
     return new Promise((resolve,reject) => {
 
         //requests to the database retrieveing "counter" data of business
-        const promises = arr.map(obj => getBusinessCounter(obj.id));
+        const promises = arr.map(obj => getBusinessCounter(querystring.escape(obj.id)));
 
         Promise.all(promises)
             .then(data => {
@@ -30,8 +30,6 @@ const parseDataWithCounter = function(arr, cb){
 }
 
 const getBusinessCounter = function(id,noError,cb){
-    id = querystring.escape(id);
-
     //making noError optional
     if(typeof(noError)==="function"){
         cb=noError;
