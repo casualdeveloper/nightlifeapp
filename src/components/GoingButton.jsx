@@ -43,6 +43,7 @@ export default class GoingButton extends React.Component {
         this.state.going = (props.counter && props.counter>=0)?props.counter:"0";
         this._imGoing = this._imGoing.bind(this);
         this.state.isUserGoing = findBusinessInUser(props.id);
+        this.refreshCounter = this.refreshCounter.bind(this);
     }
     _imGoing(e){
         const user = window.user;
@@ -83,6 +84,14 @@ export default class GoingButton extends React.Component {
         }
         return notGoing;
     }
+    refreshCounter(){
+        $.ajax({
+            method:"GET",
+            url:"/api/business/counter/"+this.props.id,
+        }).done((data)=>{
+            this.setState({going:data.counter});
+        });
+    }
     render(){
         const imGoingButtonText = this._isUserGoing();
         return(
@@ -92,7 +101,7 @@ export default class GoingButton extends React.Component {
                         {(this.state.isUserGoing)?<i className="fa fa-check" data-nomodal="true" aria-hidden="true"></i>:null}
                         {imGoingButtonText}
                     </button>
-                    <p className="card-text"><small className="text-muted">{this.state.going} Going</small></p>
+                    <p className="card-text"><small className="text-muted counter-text" data-nomodal="true" onClick={this.refreshCounter}>{this.state.going} Going</small></p>
                 </div>
                 <Link to={this.props.url} target="_blank" data-nomodal="true" className="ml-auto btn yelp-button"><i className="fa fa-yelp fa-2x " data-nomodal="true" aria-hidden="true"></i></Link>
             </div>

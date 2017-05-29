@@ -68,8 +68,15 @@ body {
 .custom-button{
     @include shadow1();
     border-radius:0px;
+    transition: background 0.2s ease-in-out;
     &:focus{
         @include shadow1();
+    }
+    &:hover{
+        background:#f6f6f6;
+    }
+    &:active{
+        box-shadow:none;
     }
     cursor:pointer;
 }
